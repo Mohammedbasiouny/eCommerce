@@ -1,9 +1,8 @@
-<footer class="footer">
-    This is the footer
-    <script src="layout/js/backend.js"></script>
-    <script src="layout/js/bootstrap.min.js"></script>
-    <script src="layout/js/jquery-3.7.1.min.js"></script>
-</footer>
-</body>
-
+<div class="footer"></div>
+		<script src="<?php echo $js ?>jquery-1.12.1.min.js"></script>
+		<script src="<?php echo $js ?>jquery-ui.min.js"></script>
+		<script src="<?php echo $js ?>bootstrap.min.js"></script>
+		<script src="<?php echo $js ?>jquery.selectBoxIt.min.js"></script>
+		<script src="<?php echo $js ?>backend.js"></script>
+	</body>
 </html>

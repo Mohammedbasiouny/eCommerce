@@ -1,0 +1,63 @@
+/* Start Global Styles */
+
+body {
+    font-size: 16px;
+    background-color: #F4F4F4;
+}
+
+
+/* End Global Styles */
+/* Start Login Form */
+.login-form {
+    width: 300px;
+    margin: 100px auto;
+}
+
+.login-form h2 {
+    color: #888;
+}
+
+.login-form input {
+    margin-bottom: 10px;
+}
+
+.login-form .form-control {
+    background-color: #EAEAEA;
+    
+}
+
+.login-form .btn {
+    background-color: #008DDE;
+}
+
+
+/* End Login Form */
+
+/* Start Bootsrtrap Edits */
+.navbar {
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.nav>li>a {
+    padding: 15px 12px;
+}
+
+.navbar-brand {
+    font-size: 1em;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:focus, 
+.navbar-inverse.navbar-nav > .open > a:hover
+.dropdown-menu {
+    background-color: #3498db;
+}
+
+.dropdown-menu {
+}
+
+.dropdown-menu > li > a {
+    color: #fff;
+}
+/* End Bootsrtrap Edits */
