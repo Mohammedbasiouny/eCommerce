@@ -3,10 +3,11 @@ session_start();
 
 if (isset($_SESSION['Username'])) {
 
+    $pageTitle = 'Dashboard';
+
     include 'init.php';
 
-    echo 'Welcome to Admin Dashboard';
-
+    
     include $tpl . 'footer.php'; // Include Footer File
 } else {
 

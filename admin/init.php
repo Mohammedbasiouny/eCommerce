@@ -12,6 +12,7 @@
 
 	// Include The Important Files
 
+	include $func . 'functions.php';
 	include $lang . 'english.php';
 	include $tpl . 'header.php';
 
