@@ -39,7 +39,8 @@ body {
     margin-bottom: 0;
 }
 
-.nav>li>a {
+.nav>li>a,
+.navbar-brand {
     padding: 15px 12px;
 }
 
@@ -49,15 +50,21 @@ body {
 
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:focus, 
-.navbar-inverse.navbar-nav > .open > a:hover
+.navbar-inverse.navbar-nav > .open > a:hover,
 .dropdown-menu {
-    background-color: #3498db;
+    background-color: #3498DB;
 }
 
 .dropdown-menu {
+    min-width: 180px;
+    padding: 0;
+    font-size: 1em;
+    border: none;
+    border-radius: 0;
 }
 
 .dropdown-menu > li > a {
-    color: #fff;
+    color: #FFF;
+    padding: 10px 15px;
 }
 /* End Bootsrtrap Edits */
