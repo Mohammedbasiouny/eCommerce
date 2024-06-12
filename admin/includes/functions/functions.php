@@ -68,3 +68,20 @@ function countItems($item, $table)
     $stmt2->execute();
     return $stmt2->fetchColumn();
 }
+
+/*
+** Get Latest Records Function v1.0
+** Function To Get Latest Items From Database [ Users, Items, Comments ]
+** $select = Field To Select
+** $table = The Table To Choose From
+** $order = The Desc Ordering
+** $limit = Number Of Records To Get
+*/
+function getLatest($select, $table, $order, $limit = 5)
+{
+    global $con;
+    $getStmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
+    $getStmt->execute();
+    $rows = $getStmt->fetchAll();
+    return $rows;
+}

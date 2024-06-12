@@ -8,8 +8,11 @@ if (isset($_SESSION['Username'])) {
     include 'init.php';
 
     /* Start Dashboard Page */
-?>
 
+    $latestsUsers = 5;
+    $theLatest = getLatest("*", "users", "UserID", $latestsUsers);
+
+?>
     <div class="home-stats">
         <div class="container text-center">
             <h1>Dashboard</h1>
@@ -23,9 +26,11 @@ if (isset($_SESSION['Username'])) {
                 <div class="col-md-3">
                     <div class="stat st-pending">
                         Pending Members
-                        <span><a href="members.php?do=Manage&page=Pending">
-                            <?php echo checkItem("RegStatus", "users", 0) ?>
-                        </a></span>
+                        <span>
+                            <a href="members.php?do=Manage&page=Pending">
+                                <?php echo checkItem("RegStatus", "users", 0) ?>
+                            </a>
+                        </span>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -50,10 +55,26 @@ if (isset($_SESSION['Username'])) {
                 <div class="col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-users"></i> Latest Registered Users
+                            <i class="fa fa-users"></i> Latest <?php echo $latestsUsers ?> Registered Users
                         </div>
                         <div class="panel-body">
-                            Test
+                            <ul class="list-unstyled latest-users">
+                                <?php
+                                foreach ($theLatest as $user) {
+                                    echo '<li>';
+                                        echo $user['Username'];
+                                        echo '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '">';
+                                           echo '<span class="btn btn-success pull-right">';
+                                                echo '<i class="fa fa-edit"></i> Edit';
+                                                if ($user['RegStatus'] == 0) {
+                                                    echo "<a href='members.php?do=Activate&userid=" . $user['UserID'] . "' class='btn btn-info pull-right activate'><i class='fa fa-close'></i> Activate</a>";
+                                                }
+                                            echo '</span>';
+                                        echo '</a>';
+                                    echo '</li>';
+                                }
+                                ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
