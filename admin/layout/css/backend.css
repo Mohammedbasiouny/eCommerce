@@ -1,85 +1,120 @@
 /* Start Global Styles */
 
 body {
-    font-size: 16px;
-    background-color: #F4F4F4;
+  font-size: 16px;
+  background-color: #f4f4f4;
 }
 
+.asterisk {
+  font-size: 30px;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  color: #d20707;
+}
 
 /* End Global Styles */
 /* Start Login Form */
 .login-form {
-    width: 300px;
-    margin: 100px auto;
+  width: 300px;
+  margin: 100px auto;
 }
 
 .login-form h2 {
-    color: #888;
+  color: #888;
 }
 
 .login-form input {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .login-form .form-control {
-    background-color: #EAEAEA;
-    
+  background-color: #eaeaea;
 }
 
 .login-form .btn {
-    background-color: #008DDE;
+  background-color: #008dde;
 }
-
 
 /* End Login Form */
 
 /* Start Bootsrtrap Edits */
 .navbar {
-    border-radius: 0;
-    margin-bottom: 0;
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
-.nav>li>a,
+.nav > li > a,
 .navbar-brand {
-    padding: 15px 12px;
+  padding: 15px 12px;
 }
 
 .navbar-brand {
-    font-size: 1em;
+  font-size: 1em;
 }
 
 .navbar-inverse .navbar-nav > .open > a,
-.navbar-inverse .navbar-nav > .open > a:focus, 
+.navbar-inverse .navbar-nav > .open > a:focus,
 .navbar-inverse.navbar-nav > .open > a:hover,
 .dropdown-menu {
-    background-color: #3498DB;
+  background-color: #3498db;
 }
 
 .dropdown-menu {
-    min-width: 180px;
-    padding: 0;
-    font-size: 1em;
-    border: none;
-    border-radius: 0;
+  min-width: 180px;
+  padding: 0;
+  font-size: 1em;
+  border: none;
+  border-radius: 0;
 }
 
 .dropdown-menu > li > a {
-    color: #FFF;
-    padding: 10px 15px;
+  color: #fff;
+  padding: 10px 15px;
 }
 
 .dropdown-menu > li > a:focus,
 .dropdown-menu > li > a:hover {
-    color: #FFF;
-    background-color: #8E44AD;
+  color: #fff;
+  background-color: #8e44ad;
+}
+
+.form-control {
+  position: relative;
 }
 /* End Bootsrtrap Edits */
 
 /* Start Member Page */
 
 h1 {
-    font-size:  55px;
-    margin: 20px 0;
-    font-weight: bold;
-    color: #666;
+  font-size: 55px;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #666;
+}
+
+.show-pass {
+  position: absolute;
+  top: 6px;
+  right: -30px;
+  /* cursor: pointer; */
+}
+
+.main-table {
+  -webkit-box-shadow: 0 3px 10px #ccc;
+  -moz-box-shadow: 0 3px 10px #ccc;
+  box-shadow: 0 3px 10px #ccc;
+}
+.main-table td {
+  background-color: #fff;
+  vertical-align: middle !important;
+}
+
+.main-table tr:first-child td {
+  background-color: #333;
+  color: #fff;
+}
+
+.main-table .btn {
+  padding: 3px 10px;
 }

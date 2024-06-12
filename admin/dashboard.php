@@ -7,7 +7,7 @@ if (isset($_SESSION['Username'])) {
 
     include 'init.php';
 
-    
+
     include $tpl . 'footer.php'; // Include Footer File
 } else {
 
