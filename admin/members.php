@@ -155,23 +155,35 @@ if (isset($_SESSION['Username'])) {
             // Check If There's No Error Proceed The Update Operation
             if (empty($formErrors)) {
 
-                // Insert User Info In Database
-                $stmt = $con->prepare("INSERT INTO 
-                                            users(Username, Password, Email, FullName)
-                                        VALUES
-                                            (:zuser, :zpass, :zmail, :zname)");
-                $stmt->execute(array(
-                    'zuser' => $user,
-                    'zpass' => $hashedPass,
-                    'zmail' => $email,
-                    'zname' => $name
-                ));
+                // Check If User Exist In Database
+                $check = checkItem("Username", "users", $user);
 
-                // Echo Success Message
-                echo "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated';
+                if ($check == 1) {
+
+                    echo 'Sorry This User Is Exist';
+                } else {
+
+                    // Insert User Info In Database
+                    $stmt = $con->prepare("INSERT INTO 
+                                                users(Username, Password, Email, FullName)
+                                            VALUES
+                                                (:zuser, :zpass, :zmail, :zname)");
+                    $stmt->execute(array(
+                        'zuser' => $user,
+                        'zpass' => $hashedPass,
+                        'zmail' => $email,
+                        'zname' => $name
+                    ));
+
+                    // Echo Success Message
+                    echo "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated';
+                }
             }
         } else {
-            redirectHome("You Can't Browse This Page Directly", 5);
+
+            $theMsg = '<div class="alert alert-danger">Sorry You Can\'t Browse This Page Directly</div>';
+
+            redirectHome($theMsg, 'back');
         }
 
         echo "</div>";
@@ -288,7 +300,9 @@ if (isset($_SESSION['Username'])) {
                 $stmt->execute(array($user, $email, $name, $pass, $id));
 
                 // Echo Success Message
-                echo "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated';
+                $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+
+                redirectHome($theMsg, 'back');
             }
         } else {
             echo 'Sorry You Can\'t Browse This Page Directly';
