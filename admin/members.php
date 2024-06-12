@@ -186,7 +186,7 @@ if (isset($_SESSION['Username'])) {
                     ));
 
                     // Echo Success Message
-                    $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+                    $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
                     redirectHome($theMsg, 'back');
                 }
             }

@@ -1,4 +1,7 @@
 <?php
+
+ob_start("ob_gzhandler"); // Output Buffering Start
+
 session_start();
 
 if (isset($_SESSION['Username'])) {
@@ -101,3 +104,6 @@ if (isset($_SESSION['Username'])) {
 
     exit();
 }
+
+ob_end_flush(); // Release The Output
+?>
