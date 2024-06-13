@@ -44,7 +44,7 @@ body {
   margin-bottom: 0;
 }
 
-.nav > li > a,
+.nav>li>a,
 .navbar-brand {
   padding: 15px 12px;
 }
@@ -53,9 +53,9 @@ body {
   font-size: 1em;
 }
 
-.navbar-inverse .navbar-nav > .open > a,
-.navbar-inverse .navbar-nav > .open > a:focus,
-.navbar-inverse.navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:focus,
+.navbar-inverse.navbar-nav>.open>a:hover,
 .dropdown-menu {
   background-color: #3498db;
 }
@@ -68,13 +68,13 @@ body {
   border-radius: 0;
 }
 
-.dropdown-menu > li > a {
+.dropdown-menu>li>a {
   color: #fff;
   padding: 10px 15px;
 }
 
-.dropdown-menu > li > a:focus,
-.dropdown-menu > li > a:hover {
+.dropdown-menu>li>a:focus,
+.dropdown-menu>li>a:hover {
   color: #fff;
   background-color: #8e44ad;
 }
@@ -82,50 +82,51 @@ body {
 .form-control {
   position: relative;
 }
+
 /* End Bootsrtrap Edits */
 
 /* Start Dashboard Page */
-.home-stats .stat{
+.home-stats .stat {
   padding: 20px;
   font-size: 15px;
-  color: #FFF;
+  color: #fff;
   border-radius: 10px;
 }
 
 .home-stats .stat a {
-  color: #FFF;
+  color: #fff;
 }
 
 .home-stats .stat a:hover {
   text-decoration: none;
 }
 
-.home-stats .stat span{
+.home-stats .stat span {
   display: block;
   font-size: 60px;
 }
 
 .home-stats .st-members {
-  background-color: #3498DB;
+  background-color: #3498db;
 }
 
 .home-stats .st-pending {
-  background-color: #C0392B;
+  background-color: #c0392b;
 }
 
 .home-stats .st-items {
-  background-color: #D35400;
+  background-color: #d35400;
 }
 
 .home-stats .st-comments {
-  background-color: #BE44AD;
+  background-color: #be44ad;
 }
 
 .latest {
   margin-top: 30px;
 }
 
-.latest-users{
+.latest-users {
   margin-bottom: 0;
 }
 
@@ -135,7 +136,7 @@ body {
 }
 
 .latest-users li:nth-child(odd) {
-  background-color: #EEE;
+  background-color: #eee;
 }
 
 .latest-users .btn-success,
@@ -145,7 +146,8 @@ body {
 
 .latest-users .btn-info {
   margin-right: 5px;
-} 
+}
+
 /* End Dashboard Page */
 
 /* Start Member Page */
@@ -169,6 +171,7 @@ h1 {
   -moz-box-shadow: 0 3px 10px #ccc;
   box-shadow: 0 3px 10px #ccc;
 }
+
 .main-table td {
   background-color: #fff;
   vertical-align: middle !important;
@@ -185,4 +188,107 @@ h1 {
 
 .activate {
   margin-left: 5px;
+}
+
+/* End Member Page */
+
+/* Start Category Page */
+
+.categories .panel-heading {
+  color: #959595;
+  font-weight: bold;
+}
+
+.categories .panel-heading i {
+  position: relative;
+  top: 1px;
+}
+
+.categories .panel-body {
+  padding: 0;
+}
+
+.categories .option a {
+  color: #888;
+  text-decoration: none;
+}
+
+.categories .option span {
+  color: #888;
+  cursor: pointer;
+}
+
+.categories .option .active {
+  color: #F00;
+}
+
+.categories hr {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.categories .cat {
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.categories .cat:hover {
+  background-color: #EEE;
+}
+
+.categories .cat:hover .hidden-buttons {
+  right: 10px;
+}
+
+.categories .cat .hidden-buttons {
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  position: absolute;
+  top: 15px;
+  right: -120px;
+}
+
+.categories .cat .hidden-buttons a {
+  margin-right: 5px;
+}
+
+.categories .cat h3 {
+  margin: 0;
+  cursor: pointer;
+  font-weight: bold;
+  color: #6A6A6A;
+}
+
+.categories .cat .full-view p {
+  margin: 10px 0;
+  color: #707070;
+}
+
+.categories .cat:last-of-type~hr {
+  display: none;
+}
+
+.categories .cat .cat-span {
+  color: #FFF;
+  padding: 4px 6px;
+  margin-right: 6px;
+  border-radius: 6px
+}
+
+.categories .cat .visibility {
+  background-color: #d35400;
+}
+
+.categories .cat .commenting {
+  background-color: #2c3e50;
+}
+
+.categories .cat .advertises {
+  background-color: #c0392b;
+}
+
+.categories .add-category {
+  margin-bottom: 30px;
 }
