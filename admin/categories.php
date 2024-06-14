@@ -176,12 +176,12 @@ if (isset($_SESSION['Username'])) {
             echo "<div class='container'>";
 
             // Get Variables From The Form
-            $name       = $_POST['name'];
-            $desc       = $_POST['description'];
-            $order      = $_POST['ordering'];
-            $visible    = $_POST['visibility'];
-            $comment    = $_POST['commenting'];
-            $ads        = $_POST['ads'];
+            $name = $_POST['name'];
+            $desc = $_POST['description'];
+            $order = $_POST['ordering'];
+            $visible = $_POST['visibility'];
+            $comment = $_POST['commenting'];
+            $ads = $_POST['ads'];
 
             // Check If User Exist In Database
             $check = checkItem("Name", "categories", $name);
@@ -197,14 +197,16 @@ if (isset($_SESSION['Username'])) {
                                             categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_Ads)
                                         VALUES
                                             (:zname, :zdesc, :zorder, :zvisible, :zcomment, :zads)");
-                $stmt->execute(array(
-                    'zname'     => $name,
-                    'zdesc'     => $desc,
-                    'zorder'    => $order,
-                    'zvisible'  => $visible,
-                    'zcomment'  => $comment,
-                    'zads'      => $ads
-                ));
+                $stmt->execute(
+                    array(
+                        'zname' => $name,
+                        'zdesc' => $desc,
+                        'zorder' => $order,
+                        'zvisible' => $visible,
+                        'zcomment' => $comment,
+                        'zads' => $ads
+                    )
+                );
 
                 // Echo Success Message
                 $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
@@ -215,7 +217,7 @@ if (isset($_SESSION['Username'])) {
             // Echo Error Message
             echo "<div class='container'>";
             $theMsg = '<div class="alert alert-danger">Sorry You Can\'t Browse This Page Directly</div>';
-            redirectHome($theMsg, 'back');
+            redirectHome($theMsg);
             echo "</div>";
         }
 
@@ -341,13 +343,13 @@ if (isset($_SESSION['Username'])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Get Variables From The Form
-            $id         = $_POST['catid'];
-            $name       = $_POST['name'];
-            $desc       = $_POST['description'];
-            $order      = $_POST['ordering'];
-            $visible    = $_POST['visibility'];
-            $comment    = $_POST['commenting'];
-            $ads        = $_POST['ads'];
+            $id = $_POST['catid'];
+            $name = $_POST['name'];
+            $desc = $_POST['description'];
+            $order = $_POST['ordering'];
+            $visible = $_POST['visibility'];
+            $comment = $_POST['commenting'];
+            $ads = $_POST['ads'];
 
             // Update The Database With This Info
             $stmt = $con->prepare("UPDATE 

@@ -195,7 +195,7 @@ if (isset($_SESSION['Username'])) {
             // Echo Error Message
             echo "<div class='container'>";
             $theMsg = '<div class="alert alert-danger">Sorry You Can\'t Browse This Page Directly</div>';
-            redirectHome($theMsg, 'back');
+            redirectHome($theMsg);
             echo "</div>";
         }
 
