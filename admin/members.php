@@ -156,11 +156,6 @@ if (isset($_SESSION['Username'])) {
                 $formErrors[] = 'Full Name Can\'t Be <strong>Empty</strong>';
             }
 
-            // Loop Into Errors Array And Echo It
-            foreach ($formErrors as $error) {
-                echo '<div class="alert alert-danger">' . $error . '</div>';
-            }
-
             // Check If There's No Error Proceed The Update Operation
             if (empty($formErrors)) {
 
@@ -189,6 +184,13 @@ if (isset($_SESSION['Username'])) {
                     $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
                     redirectHome($theMsg, 'back');
                 }
+            } else {
+                // Loop Into Errors Array And Echo It
+                foreach ($formErrors as $error) {
+                    echo '<div class="alert alert-danger">' . $error . '</div>';
+                }
+
+                redirectHome('', 'back');
             }
         } else {
 
@@ -222,14 +224,14 @@ if (isset($_SESSION['Username'])) {
                     <!-- Start Username Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Username</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="text" name="username" class="form-control" value="<?php echo $row['Username'] ?>" autocomplete="off">
                         </div>
                     </div>
                     <!-- Start Password Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Password</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="hidden" name="oldpassword" value="<?php echo $row['Password'] ?>">
                             <input type="password" name="newpassword" class="form-control" autocomplete="new-password" placeholder="Leave Blank If You Don't Want To Change">
                         </div>
@@ -237,14 +239,14 @@ if (isset($_SESSION['Username'])) {
                     <!-- Start Email Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" value="<?php echo $row['Email'] ?>" required="required">
                         </div>
                     </div>
                     <!-- Start Full Name Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Full Name</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="text" name="full" class="form-control" value="<?php echo $row['FullName'] ?>" required="required">
                         </div>
                     </div>
@@ -304,11 +306,6 @@ if (isset($_SESSION['Username'])) {
                 $formErrors[] = 'Full Name Can\'t Be <strong>Empty</strong>';
             }
 
-            // Loop Into Errors Array And Echo It
-            foreach ($formErrors as $error) {
-                echo '<div class="alert alert-danger">' . $error . '</div>';
-            }
-
             // Check If There's No Error Proceed The Update Operation
             if (empty($formErrors)) {
 
@@ -319,6 +316,13 @@ if (isset($_SESSION['Username'])) {
                 // Echo Success Message
                 $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
                 redirectHome($theMsg, 'back');
+            } else {
+                // Loop Into Errors Array And Echo It
+                foreach ($formErrors as $error) {
+                    echo '<div class="alert alert-danger">' . $error . '</div>';
+                }
+
+                redirectHome('', 'back');
             }
         } else {
 
@@ -352,7 +356,7 @@ if (isset($_SESSION['Username'])) {
 
             // Echo Success Message
             $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Deleted</div>';
-            redirectHome($theMsg);
+            redirectHome($theMsg, 'back');
         } else {
 
             // Echo Error Message
@@ -383,7 +387,7 @@ if (isset($_SESSION['Username'])) {
 
             // Echo Success Message
             $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
-            redirectHome($theMsg);
+            redirectHome($theMsg, 'back');
         } else {
 
             // Echo Error Message

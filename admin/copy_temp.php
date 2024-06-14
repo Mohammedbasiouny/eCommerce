@@ -21,7 +21,6 @@ if (isset($_SESSION['Username'])) {
     if ($do == 'Manage') {
 
         echo 'Welcome To Manage Page';
-        
     } elseif ($do == 'Add') {
     } elseif ($do == 'Insert') {
     } elseif ($do == 'Edit') {
