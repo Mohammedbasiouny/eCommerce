@@ -365,7 +365,7 @@ if (isset($_SESSION['Username'])) {
         }
 
         echo "</div>";
-    } elseif ($do == 'Activate') {    // Delete Member Page
+    } elseif ($do == 'Activate') {    // Activate Member Page
 
         echo "<h1 class='text-center'>Activate Member</h1>";
         echo "<div class='container'>";

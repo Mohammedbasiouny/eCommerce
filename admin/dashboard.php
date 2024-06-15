@@ -24,34 +24,46 @@ if (isset($_SESSION['Username'])) {
             <div class="row">
                 <div class="col-md-3">
                     <div class="stat st-members">
-                        Total Members
-                        <span><a href="members.php"><?php echo countItems('UserID', 'users') ?></a></span>
+                        <i class="fa fa-users"></i>
+                        <div class="info">
+                            Total Members
+                            <span><a href="members.php"><?php echo countItems('UserID', 'users') ?></a></span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="stat st-pending">
-                        Pending Members
-                        <span>
-                            <a href="members.php?do=Manage&page=Pending">
-                                <?php echo checkItem("RegStatus", "users", 0) ?>
-                            </a>
-                        </span>
+                        <i class="fa fa-user-plus"></i>
+                        <div class="info">
+                            Pending Members
+                            <span>
+                                <a href="members.php?do=Manage&page=Pending">
+                                    <?php echo checkItem("RegStatus", "users", 0) ?>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="stat st-items">
-                        Total Items
-                        <span>
-                            <a href="items.php?do=Manage">
-                                <?php echo countItems('Item_ID', 'items') ?>
-                            </a>
-                        </span>
+                        <i class="fa fa-tag"></i>
+                        <div class="info">
+                            Total Items
+                            <span>
+                                <a href="items.php?do=Manage">
+                                    <?php echo countItems('Item_ID', 'items') ?>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="stat st-comments">
-                        Total Comments
-                        <span>3500</span>
+                        <i class="fa fa-comments"></i>
+                        <div class="info">
+                            Total Comments
+                            <span>0</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,7 +76,11 @@ if (isset($_SESSION['Username'])) {
                 <div class="col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-users"></i> Latest <?php echo $numUsers ?> Registered Users
+                            <i class="fa fa-users"></i> 
+                            Latest <?php echo $numUsers ?> Registered Users
+                            <span class="toggle-info pull-right">
+                                <i class="fa fa-plus fa-lg"></i>
+                            </span>
                         </div>
                         <div class="panel-body">
                             <ul class="list-unstyled latest-users">
@@ -91,6 +107,9 @@ if (isset($_SESSION['Username'])) {
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-tag"></i> Latest Items
+                            <span class="toggle-info pull-right">
+                                <i class="fa fa-plus fa-lg"></i>
+                            </span>
                         </div>
                         <div class="panel-body">
                             <ul class="list-unstyled latest-users">

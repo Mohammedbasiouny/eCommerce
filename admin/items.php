@@ -489,7 +489,7 @@ if (isset($_SESSION['Username'])) {
         }
 
         echo "</div>";
-    } elseif ($do == 'Approve') {
+    } elseif ($do == 'Approve') { // Approve Item Page
 
         echo "<h1 class='text-center'>Approve Item</h1>";
         echo "<div class='container'>";
