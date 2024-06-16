@@ -21,7 +21,7 @@ function getTitle()
 ** $theMsg = Echo The Message [ Error | Success | Warning ]
 ** $seconds = Seconds Before Redirecting
 */
-function redirectHome($theMsg, $url = null, $seconds = 5)
+function redirectHome($theMsg, $url = null, $seconds = 3)
 {
     if ($url === null) {
         $url = 'index.php';

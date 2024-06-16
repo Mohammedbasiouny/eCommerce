@@ -39,43 +39,52 @@ if (isset($_SESSION['Username'])) {
         $stmt->execute();
 
         // Assign To Variable
-        $rows = $stmt->fetchAll();
+        $comments = $stmt->fetchAll();
+
+        if (!empty($comments)) {
 ?>
-        <h1 class="text-center">Manage Comments</h1>
-        <div class="container">
-            <div class="table-responsive">
-                <table class="main-table text-center table table-bordered">
-                    <tr>
-                        <td>ID</td>
-                        <td>Comment</td>
-                        <td>Item Name</td>
-                        <td>Username</td>
-                        <td>Added Date</td>
-                        <td>Control</td>
-                    </tr>
-                    <?php
-                    foreach ($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>" . $row['C_ID'] . "</td>";
-                        echo "<td>" . $row['Comment'] . "</td>";
-                        echo "<td>" . $row['Item_Name'] . "</td>";
-                        echo "<td>" . $row['User_Name'] . "</td>";
-                        echo "<td>" . $row['Comment_Date'] . "</td>";
-                        echo "<td>
-                            <a href='?do=Edit&comid=" . $row['C_ID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                            <a href='?do=Delete&comid=" . $row['C_ID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>";
-                        if ($row['Status'] == 0) {
-                            echo "<a href='?do=Approve&comid=" . $row['C_ID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>";
+            <h1 class="text-center">Manage Comments</h1>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="main-table text-center table table-bordered">
+                        <tr>
+                            <td>ID</td>
+                            <td>Comment</td>
+                            <td>Item Name</td>
+                            <td>Username</td>
+                            <td>Added Date</td>
+                            <td>Control</td>
+                        </tr>
+                        <?php
+                        foreach ($comments as $comment) {
+                            echo "<tr>";
+                            echo "<td>" . $comment['C_ID'] . "</td>";
+                            echo "<td>" . $comment['Comment'] . "</td>";
+                            echo "<td>" . $comment['Item_Name'] . "</td>";
+                            echo "<td>" . $comment['User_Name'] . "</td>";
+                            echo "<td>" . $comment['Comment_Date'] . "</td>";
+                            echo "<td>
+                            <a href='?do=Edit&comid=" . $comment['C_ID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                            <a href='?do=Delete&comid=" . $comment['C_ID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>";
+                            if ($comment['Status'] == 0) {
+                                echo "<a href='?do=Approve&comid=" . $comment['C_ID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>";
+                            }
+                            echo "</td>";
+                            echo "</tr>";
                         }
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
+                        ?>
+                    </table>
+                </div>
             </div>
-        </div>
 
         <?php
+
+        } else {
+
+            echo '<div class="container">';
+            echo '<div class="nice-message">There\'s No Comments To Show</div>';
+            echo '</div>';
+        }
     } elseif ($do == 'Edit') {      // Edit Page
 
         // Check If Get Request comid Is Numeric & Get The Integer Value Of It
@@ -199,7 +208,7 @@ if (isset($_SESSION['Username'])) {
             $stmt->execute(array($comid));
 
             // Echo Success Message
-            $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+            $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Approved</div>';
             redirectHome($theMsg, 'back');
         } else {
 

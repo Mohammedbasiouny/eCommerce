@@ -27,52 +27,60 @@ if (isset($_SESSION['Username'])) {
         }
 
         // Select All Users Except Admin
-        $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query");
+        $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 1 $query ORDER BY UserID DESC");
 
         // Execute The Statement
         $stmt->execute();
 
         // Assign To Variable
         $rows = $stmt->fetchAll();
+
+        if (!empty($rows)) {
 ?>
-        <h1 class="text-center">Manage Members</h1>
-        <div class="container">
-            <div class="table-responsive">
-                <table class="main-table text-center table table-bordered">
-                    <tr>
-                        <td>#ID</td>
-                        <td>Username</td>
-                        <td>Email</td>
-                        <td>Full Name</td>
-                        <td>Registered Date</td>
-                        <td>Control</td>
-                    </tr>
-                    <?php
-                    foreach ($rows as $row) {
-                        echo "<tr>";
-                        echo "<td>" . $row['UserID'] . "</td>";
-                        echo "<td>" . $row['Username'] . "</td>";
-                        echo "<td>" . $row['Email'] . "</td>";
-                        echo "<td>" . $row['FullName'] . "</td>";
-                        echo "<td>" . $row['Date'] . "</td>";
-                        echo "<td>
+            <h1 class="text-center">Manage Members</h1>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="main-table text-center table table-bordered">
+                        <tr>
+                            <td>#ID</td>
+                            <td>Username</td>
+                            <td>Email</td>
+                            <td>Full Name</td>
+                            <td>Registered Date</td>
+                            <td>Control</td>
+                        </tr>
+                        <?php
+                        foreach ($rows as $row) {
+                            echo "<tr>";
+                            echo "<td>" . $row['UserID'] . "</td>";
+                            echo "<td>" . $row['Username'] . "</td>";
+                            echo "<td>" . $row['Email'] . "</td>";
+                            echo "<td>" . $row['FullName'] . "</td>";
+                            echo "<td>" . $row['Date'] . "</td>";
+                            echo "<td>
                             <a href='?do=Edit&userid=" . $row['UserID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
                             <a href='?do=Delete&userid=" . $row['UserID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>";
-                        if ($row['RegStatus'] == 0) {
-                            echo "<a href='?do=Activate&userid=" . $row['UserID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>";
+                            if ($row['RegStatus'] == 0) {
+                                echo "<a href='?do=Activate&userid=" . $row['UserID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>";
+                            }
+                            echo "</td>";
+                            echo "</tr>";
                         }
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
+                        ?>
+                    </table>
+                </div>
+                <a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus"></i> New Member</a>
             </div>
-            <a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus"></i> New Member</a>
-        </div>
 
-    <?php
+        <?php
+        } else {
+            echo '<div class="container">';
+            echo '<div class="nice-message">There\'s No Members To Show</div>';
+            echo '<a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus fa-lg"></i> New Member</a>';
+            echo '</div>';
+        }
     } elseif ($do == 'Add') {       // Add Member Page 
-    ?>
+        ?>
         <h1 class="text-center">Add New Member</h1>
         <div class="container">
             <form class="form-horizontal" action="?do=Insert" method="POST">
@@ -309,13 +317,26 @@ if (isset($_SESSION['Username'])) {
             // Check If There's No Error Proceed The Update Operation
             if (empty($formErrors)) {
 
-                // Update The Database With This Info
-                $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ? WHERE UserID = ?");
-                $stmt->execute(array($user, $email, $name, $pass, $id));
+                $stmt2 = $con->prepare("SELECT * FROM users WHERE Username = ? AND UserID != ?");
 
-                // Echo Success Message
-                $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
-                redirectHome($theMsg, 'back');
+                $stmt2->execute(array($user, $id));
+
+                $count = $stmt2->rowCount();
+
+                if ($count == 1) {
+
+                    $theMsg = "<div class='alert alert-danger'>Sorry This Username Is Exist</div>";
+                    redirectHome($theMsg, 'back');
+                } else {
+
+                    // Update The Database With This Info
+                    $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ? WHERE UserID = ?");
+                    $stmt->execute(array($user, $email, $name, $pass, $id));
+
+                    // Echo Success Message
+                    $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+                    redirectHome($theMsg, 'back');
+                }
             } else {
                 // Loop Into Errors Array And Echo It
                 foreach ($formErrors as $error) {

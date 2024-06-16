@@ -13,6 +13,13 @@ body {
   color: #d20707;
 }
 
+.nice-message {
+  padding: 10px;
+  background-color: #FFF;
+  margin: 10px 0;
+  border-left: 5px solid #080;
+}
+
 /* End Global Styles */
 /* Start Login Form */
 .login-form {
@@ -169,6 +176,42 @@ body {
 
 .latest-users .btn-info {
   margin-right: 5px;
+}
+
+.latest .comment-box {
+  margin: 5px 0 10px;
+}
+.latest .comment-box .member-c,
+.latest .comment-box .member-n {
+  float: left;
+}
+
+.latest .comment-box .member-n {
+  width: 80px;
+  text-align: center;
+  margin-right: 20px;
+  position: relative;
+  top: 10px;
+} 
+
+.latest .comment-box .member-c {
+  width: calc(100% - 100px);
+  background-color: #EFEFEF;
+  padding: 10px;
+  position: relative;
+}
+
+.latest .comment-box .member-c:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -28px;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent #EFEFEF transparent transparent;
+  border-width: 15px;
 }
 
 /* End Dashboard Page */

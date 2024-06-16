@@ -34,56 +34,67 @@ if (isset($_SESSION['Username'])) {
                                 INNER JOIN 
                                     users 
                                 ON 
-                                    users.UserID = items.Member_ID");
+                                    users.UserID = items.Member_ID
+                                Order By 
+                                    Item_ID DESC");
 
         // Execute The Statement
         $stmt->execute();
 
         // Assign To Variable
         $items = $stmt->fetchAll();
+
+        if (!empty($items)) {
 ?>
-        <h1 class="text-center">Manage Items</h1>
-        <div class="container">
-            <div class="table-responsive">
-                <table class="main-table text-center table table-bordered">
-                    <tr>
-                        <td>#ID</td>
-                        <td>Name</td>
-                        <td>Descriptionc</td>
-                        <td>Price</td>
-                        <td>Adding Date</td>
-                        <td>Category</td>
-                        <td>Username</td>
-                        <td>Control</td>
-                    </tr>
-                    <?php
-                    foreach ($items as $item) {
-                        echo "<tr>";
-                        echo "<td>" . $item['Item_ID'] . "</td>";
-                        echo "<td>" . $item['Name'] . "</td>";
-                        echo "<td>" . $item['Description'] . "</td>";
-                        echo "<td>" . $item['Price'] . "</td>";
-                        echo "<td>" . $item['Add_Date'] . "</td>";
-                        echo "<td>" . $item['category_name'] . "</td>";
-                        echo "<td>" . $item['Username'] . "</td>";
-                        echo "<td>
+            <h1 class="text-center">Manage Items</h1>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="main-table text-center table table-bordered">
+                        <tr>
+                            <td>#ID</td>
+                            <td>Name</td>
+                            <td>Descriptionc</td>
+                            <td>Price</td>
+                            <td>Adding Date</td>
+                            <td>Category</td>
+                            <td>Username</td>
+                            <td>Control</td>
+                        </tr>
+                        <?php
+                        foreach ($items as $item) {
+                            echo "<tr>";
+                            echo "<td>" . $item['Item_ID'] . "</td>";
+                            echo "<td>" . $item['Name'] . "</td>";
+                            echo "<td>" . $item['Description'] . "</td>";
+                            echo "<td>" . $item['Price'] . "</td>";
+                            echo "<td>" . $item['Add_Date'] . "</td>";
+                            echo "<td>" . $item['category_name'] . "</td>";
+                            echo "<td>" . $item['Username'] . "</td>";
+                            echo "<td>
                             <a href='?do=Edit&itemid=" . $item['Item_ID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
                             <a href='?do=Delete&itemid=" . $item['Item_ID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>";
-                        if ($item['Approve'] == 0) {
-                            echo "<a href='?do=Approve&itemid=" . $item['Item_ID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>";
+                            if ($item['Approve'] == 0) {
+                                echo "<a href='?do=Approve&itemid=" . $item['Item_ID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>";
+                            }
+                            echo "</td>";
+                            echo "</tr>";
                         }
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
+                        ?>
+                    </table>
+                </div>
+                <a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus"></i> New Item</a>
             </div>
-            <a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus"></i> New Item</a>
-        </div>
 
-    <?php
+        <?php
+
+        } else {
+            echo '<div class="container">';
+            echo '<div class="nice-message">There\'s No Items To Show</div>';
+            echo '<a href="?do=Add" class="btn btn-primary"><i class="fa fa-plus"></i> New Item</a>';
+            echo '</div>';
+        }
     } elseif ($do == 'Add') {
-    ?>
+        ?>
         <h1 class="text-center">Add New Item</h1>
         <div class="container">
             <form class="form-horizontal" action="?do=Insert" method="POST">
@@ -273,6 +284,7 @@ if (isset($_SESSION['Username'])) {
 
         // If There's Such ID Show The Form
         if ($count > 0) { ?>
+
             <h1 class="text-center">Edit Item</h1>
             <div class="container">
                 <form class="form-horizontal" action="?do=Update" method="POST">
@@ -369,6 +381,57 @@ if (isset($_SESSION['Username'])) {
                         </div>
                     </div>
                 </form>
+                <?php
+
+                // Select All Users Except Admin
+                $stmt = $con->prepare("SELECT
+                                            comments.*, users.Username AS User_Name
+                                        FROM
+                                            comments
+                                        INNER JOIN
+                                            users
+                                        ON
+                                            users.UserID = comments.User_ID
+                                        WHERE Item_ID = ?");
+                // Execute The Statement
+                $stmt->execute(array($itemid));
+                // Assign To Variable
+                $rows = $stmt->fetchAll();
+
+                if (!empty($rows)) {
+
+                ?>
+                    <h1 class="text-center">Manage "<?php echo $item['Name']; ?>" Comments</h1>
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="main-table text-center table table-bordered">
+                                <tr>
+                                    <td>Comment</td>
+                                    <td>Username</td>
+                                    <td>Added Date</td>
+                                    <td>Control</td>
+                                </tr>
+                                <?php
+                                foreach ($rows as $row) {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['Comment'] . "</td>";
+                                    echo "<td>" . $row['User_Name'] . "</td>";
+                                    echo "<td>" . $row['Comment_Date'] . "</td>";
+                                    echo "<td>
+                            <a href='?do=Edit&comid=" . $row['C_ID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                            <a href='?do=Delete&comid=" . $row['C_ID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>";
+                                    if ($row['Status'] == 0) {
+                                        echo "<a href='?do=Approve&comid=" . $row['C_ID'] . "' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>";
+                                    }
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+                            </table>
+                        </div>
+                    </div>
+                <?php } ?>
+
             </div>
 <?php
             // If There's No Such ID Show Error Message
@@ -387,14 +450,14 @@ if (isset($_SESSION['Username'])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Get Variables From The Form
-            $id         = $_POST['itemid'];
-            $name       = $_POST['name'];
-            $desc       = $_POST['description'];
-            $price      = $_POST['price'];
-            $country    = $_POST['country'];
-            $status     = $_POST['status'];
-            $member     = $_POST['member'];
-            $category   = $_POST['category'];
+            $id = $_POST['itemid'];
+            $name = $_POST['name'];
+            $desc = $_POST['description'];
+            $price = $_POST['price'];
+            $country = $_POST['country'];
+            $status = $_POST['status'];
+            $member = $_POST['member'];
+            $category = $_POST['category'];
 
             // Validate The Form
             $formErrors = array();
