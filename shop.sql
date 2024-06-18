@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2024 at 12:06 AM
+-- Generation Time: Jun 17, 2024 at 02:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -44,10 +44,11 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`CatID`, `Name`, `Description`, `Ordering`, `Visibility`, `Allow_Comment`, `Allow_Ads`) VALUES
 (1, 'Computers', 'Shop laptops, desktops, monitors, tablets, PC gaming, hard drives and storage, accessories and more', 0, 0, 0, 0),
 (2, 'TVs', '', 0, 0, 0, 0),
-(3, 'Toys', '', 0, 0, 0, 0),
+(3, 'Toys', '', 1, 0, 0, 0),
 (4, 'Fashion', '', 0, 0, 0, 0),
 (5, 'Mobiles', 'Mobiles & accessories | New arrivals', 0, 0, 0, 0),
-(6, 'Car Accessories', '', 0, 0, 0, 0);
+(6, 'Car Accessories', '', 0, 0, 0, 0),
+(7, 'Other', '', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,7 @@ INSERT INTO `comments` (`C_ID`, `Comment`, `Status`, `Comment_Date`, `Item_ID`, 
 (3, 'جهاز ممتاز وآداء محترم', 0, '2024-06-16', 5, 3),
 (4, 'لابتوب جميل وسريع حاجه محترمه\r\n', 0, '2024-06-16', 3, 1),
 (5, 'Very good in everything but the sound is not high, you have to raise volume .. except that, it is very good in everything else, quality of picture is really good!\r\n', 0, '2024-06-16', 6, 2),
-(6, 'It one of the great smart phones out there. , but I don\'t like the fact that one need to remove one sim in order to use SD card.\r\n', 0, '2024-06-16', 5, 4);
+(6, 'It one of the great smart phones out there. , but I don\'t like the fact that one need to remove one sim in order to use SD card.123456\r\n', 0, '2024-06-16', 5, 4);
 
 -- --------------------------------------------------------
 
@@ -105,10 +106,11 @@ INSERT INTO `items` (`Item_ID`, `Name`, `Description`, `Price`, `Add_Date`, `Cou
 (1, 'iPhone 13', '6.1-inch Super Retina XDR display Cinematic mode adds shallow depth of field and shifts focus automatically in your videos Advanced dual-camera system with 12MP Wide and Ultra Wide cameras; Photographic Styles, Smart HDR 4, Night mode, 4K Dolby Vision HDR recording 12MP TrueDepth front camera with Night mode, 4K Dolby Vision HDR recording A15 Bionic chip for lightning-fast performance', '28500', '2024-06-16', 'USA', '', '3', 0, 5, 0, 1),
 (2, 'BACKPACK', 'adidas POWER VII IVORY/SEMSPA/BLACK BACKPACK for Unisex size NS', '2000', '2024-06-16', 'UK', '', '3', 0, 4, 0, 6),
 (3, 'Dell G15', 'Dell G15 5511 Gaming Laptop - 11th Intel Core i5-11260H 6-Cores, 8GB RAM, 512GB SSD, NVIDIA Geforce RTX3050 4GB GDDR6 Graphics, 15.6\" FHD 120Hz', '32000', '2024-06-16', 'USA', '', '2', 0, 1, 0, 3),
-(4, 'Bike', 'Kids Bikes with Elephant Design', '1200', '2024-06-16', 'EG', '', '1', 0, 3, 1, 5),
+(4, 'Bike', 'Kids Bikes with Elephant Design', '1250', '2024-06-16', 'EG', '', '1', 0, 3, 1, 5),
 (5, 'S23 Ultra', 'Samsung Galaxy S23 Ultra, 12GB, Phantom Black, Mobile Phone, Dual SIM, Android Smartphone, 1 Year Manufacturer Warranty', '54000', '2024-06-16', 'EG', '', '2', 0, 5, 0, 4),
 (6, 'Smart TV', 'TORNADO Shield Smart LED TV 43 Inch HD With Built-In Receiver, 2 HDMI and 2 USB Inputs', '18000', '2024-06-16', 'EG', '', '1', 0, 2, 1, 2),
-(7, 'MacBook Pro', 'Apple 2023 MacBook Pro laptop with Apple M2 Pro chip with 12 core CPU and 19 core GPU: 16.2-inch Liquid Retina XDR display, 16GB, 1TB SSD storage. Works with iPhone/iPad; Space Grey; English', '128000', '2024-06-16', 'USA', '', '1', 0, 1, 0, 2);
+(7, 'MacBook Pro', 'Apple 2023 MacBook Pro laptop with Apple M2 Pro chip with 12 core CPU and 19 core GPU: 16.2-inch Liquid Retina XDR display, 16GB, 1TB SSD storage. Works with iPhone/iPad; Space Grey; English', '128000', '2024-06-16', 'USA', '', '1', 0, 1, 0, 2),
+(8, 'Vap', 'Drag1000', '2500', '2024-06-16', 'EG', '', '1', 0, 4, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -134,11 +136,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `GroupID`, `TrustStatus`, `RegStatus`, `Date`) VALUES
 (1, 'mohamed', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'mohamedbasiouny.swe@gmail.com', 'Mohamed Basiouny', 1, 0, 1, '2024-06-16'),
-(2, 'mariam', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Mariam@gmail.com', 'Mariam Sabry', 0, 0, 0, '2024-06-16'),
-(3, 'ahmed', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'ahmed@gmail.com', 'Ahmed Basiouny', 0, 0, 0, '2024-06-16'),
+(2, 'hayat', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'hayat@gmail.com', 'hayat Sabry', 0, 0, 0, '2024-06-16'),
+(3, 'ahmed', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'ahmed@gmail.com', 'Ahmed Basiouny', 1, 0, 0, '2024-06-16'),
 (4, 'sama', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'sama@gmail.com', 'Sama Basiouny', 0, 0, 1, '2024-06-16'),
 (5, 'karma', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'karma@gmail.com', 'Karma Ahmed', 0, 0, 0, '2024-06-16'),
-(6, 'doaa', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Doaa@gmail.com', 'Doaa Gobran', 0, 0, 0, '2024-06-16');
+(6, 'doaa', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', 'Doaa@gmail.com', 'Doaa Gobran', 0, 0, 1, '2024-06-16');
 
 --
 -- Indexes for dumped tables
@@ -182,7 +184,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `CatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `CatID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -194,7 +196,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -2,7 +2,6 @@ $(function () {
 	"use strict";
 
 	// Dashboard
-
 	$(".toggle-info").click(function () {
 		$(this)
 			.toggleClass("selected")
@@ -18,13 +17,11 @@ $(function () {
 	});
 
 	// Trigger The Selectboxit
-
 	$("select").selectBoxIt({
 		autoWidth: false,
 	});
 
 	// Hide Placeholder On Form Focus
-
 	$("[placeholder]")
 		.focus(function () {
 			$(this).attr("data-text", $(this).attr("placeholder"));
@@ -36,7 +33,6 @@ $(function () {
 		});
 
 	// Add Asterisk On Required Field
-
 	$("input").each(function () {
 		if ($(this).attr("required") === "required") {
 			$(this).after('<span class="asterisk">*</span>');
