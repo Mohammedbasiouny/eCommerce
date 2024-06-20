@@ -85,3 +85,4 @@ function getLatest($select, $table, $order, $limit = 5)
     $rows = $getStmt->fetchAll();
     return $rows;
 }
+

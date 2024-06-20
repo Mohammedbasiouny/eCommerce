@@ -3,9 +3,9 @@ session_start();
 $noNavbar = '';
 $pageTitle = 'Login';
 
-// $pageTitle = 'Login';
+// If Session Exist Redirect To Dashboard Page
 if (isset($_SESSION['Username'])) {
-	header('Location: dashboard.php'); // Redirect To Dashboard Page
+	header('Location: dashboard.php');
 }
 
 include 'init.php';

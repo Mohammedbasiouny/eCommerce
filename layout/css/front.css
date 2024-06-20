@@ -94,8 +94,12 @@ h1 {
   margin-bottom: 10px;
 }
 
-.login-page .selected {
-  color: #B22020;
+.login-page [data-class="login"].selected {
+  color: #337AB7;
+}
+
+.login-page [data-class="signup"].selected {
+  color: #5CB85C;
 }
 
 .login-page h1 {
@@ -126,3 +130,10 @@ h1 {
   color: #FFF;
 }
 /* End Categories Page */
+
+/* Start Profile Page */
+.information {
+  margin: 20px 0 0;
+}
+
+/* End Profile Page */

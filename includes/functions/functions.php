@@ -25,6 +25,25 @@ function getItems($Cat_ID){
     return $items;
 }
 
+/*
+** Check If User Is Not Activated
+** Function To Check The RegStatus Of The User
+*/
+function checkUserStatus($user)
+{
+    global $con;
+    $stmtx = $con->prepare("SELECT 
+                                Username, RegStatus 
+                            FROM 
+                                users 
+                            WHERE 
+                                Username = ? 
+                            AND 
+                                RegStatus = 0");
+    $stmtx->execute(array($user));
+    $status = $stmtx->rowCount();
+    return $status;
+}
 
 
 
