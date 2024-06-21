@@ -71,8 +71,9 @@ if (isset($_SESSION['user'])) {
                             echo '<span class="price-tag">$' . $item['Price'] . '</span>';
                             echo '<img class="img-responsive" src="img.png" alt="...">';
                             echo '<div class="caption">';
-                            echo '<h3>' . $item['Name'] . '</h3>';
+                            echo '<h3><a href="items.php?itemid=' . $item['Item_ID'] . '">' . $item['Name'] . '</a></h3>';
                             echo '<p>' . $item['Description'] . '</p>';
+                            echo '<div class="date">' . $item['Add_Date'] . '</div>';
                             echo '</div>';
                             echo '</div>';
                             echo '</div>';
