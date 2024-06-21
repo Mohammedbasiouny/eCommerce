@@ -17,7 +17,8 @@ function getCat()
 ** Get Records Function v1.0
 ** Function To Get Items From Database
 */
-function getItems($where, $value) {
+function getItems($where, $value)
+{
     global $con;
     $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
     $getItems->execute(array($value));
@@ -45,7 +46,27 @@ function checkUserStatus($user)
     return $status;
 }
 
+/*
+	** Check Items Function v1.0
+	** Function to Check Item In Database [ Function Accept Parameters ]
+	** $select = The Item To Select [ Example: user, item, category ]
+	** $from = The Table To Select From [ Example: users, items, categories ]
+	** $value = The Value Of Select [ Example: Osama, Box, Electronics ]
+	*/
 
+function checkItem($select, $from, $value)
+{
+
+    global $con;
+
+    $statement = $con->prepare("SELECT $select FROM $from WHERE $select = ?");
+
+    $statement->execute(array($value));
+
+    $count = $statement->rowCount();
+
+    return $count;
+}
 
 
 
@@ -88,7 +109,7 @@ function redirectHome($theMsg, $url = null, $seconds = 3)
         $url = 'index.php';
         $link = 'Homepage';
     } else {
-        
+
         $url = isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] !== '' ? $_SERVER['HTTP_REFERER'] : 'index.php';
 
         $link = 'Previous Page';
@@ -98,22 +119,6 @@ function redirectHome($theMsg, $url = null, $seconds = 3)
     echo "<div class='alert alert-info'>You Will Be Redirected To $link After $seconds Seconds</div>";
     header("refresh:$seconds;url=$url");
     exit();
-}
-
-/*
-** Check Items Function v1.0
-** Function To Check Item In Database [ Function Accept Parameters ]
-** $select = The Item To Select [ Example: user, item, category ]
-** $from = The Table To Select From [ Example: users, items, categories ]
-** $value = The Value Of Select [ Example: Mohamed, Box, Electronics ]
-*/
-function checkItem($select, $from, $value)
-{
-    global $con;
-    $statement = $con->prepare("SELECT $select FROM $from WHERE $select = ?");
-    $statement->execute(array($value));
-    $count = $statement->rowCount();
-    return $count;
 }
 
 /*

@@ -23,12 +23,21 @@ h1 {
   color: #d20707;
 }
 
+.main-form .asterisk {
+  font-size: 30px;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  color: #d20707;
+}
+
 .nice-message {
   padding: 10px;
   background-color: #fff;
   margin: 10px 0;
   border-left: 5px solid #080;
 }
+
 /* End Global Styles */
 
 /* Start Bootsrtrap Edits */
@@ -75,17 +84,20 @@ h1 {
 .form-control {
   position: relative;
 }
+
 /* End Bootsrtrap Edits */
 
 /* Start Header */
 .upper-bar {
   padding: 10px;
-  background-color: #FFF;
+  background-color: #fff;
 }
+
 /* End Header */
 
 /* Start Login Page */
-.login-page form {
+.login-page form,
+.the-errors {
   max-width: 380px;
   margin: auto;
 }
@@ -95,15 +107,15 @@ h1 {
 }
 
 .login-page [data-class="login"].selected {
-  color: #337AB7;
+  color: #337ab7;
 }
 
 .login-page [data-class="signup"].selected {
-  color: #5CB85C;
+  color: #5cb85c;
 }
 
 .login-page h1 {
-  color: #C0C0C0;
+  color: #c0c0c0;
 }
 
 .login-page h1 span {
@@ -113,6 +125,27 @@ h1 {
 .login-page .signup {
   display: none;
 }
+
+.the-errors .msg {
+  padding: 10px;
+  text-align: left;
+  border-left: 5px solid #cd6858;
+  background-color: #fff;
+  margin-bottom: 8px;
+  border-right: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #919191;
+}
+
+.the-errors .error {
+  border-left: 5px solid #cd6858;
+}
+
+.the-errors .success {
+  border-left: 5px solid #5cb85c;
+}
+
 /* End Login Page */
 
 /* Start Categories Page */
@@ -121,19 +154,38 @@ h1 {
 }
 
 .item-box .price-tag {
-  background-color: #B4B4B4;
+  background-color: #b4b4b4;
   padding: 2px 10px;
   position: absolute;
   left: 0;
   top: 10px;
   font-weight: bold;
-  color: #FFF;
+  color: #fff;
 }
+
 /* End Categories Page */
 
 /* Start Profile Page */
 .information {
-  margin: 20px 0 0;
+  margin-top: 20px;
+}
+
+.information ul {
+  padding: 0;
+  margin: 0;
+}
+
+.information ul li {
+  padding: 10px;
+}
+
+.information ul li:nth-child(odd) {
+  background-color: #eee;
+}
+
+.information ul li span {
+  display: inline-block;
+  width: 120px;
 }
 
 /* End Profile Page */

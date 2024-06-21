@@ -14,6 +14,7 @@ include 'init.php';
 // Check If User Coming From HTTP Post Request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    // Check If User Coming From Login Form
     if (isset($_POST['login'])) {
 
         $user = $_POST['username'];
@@ -22,21 +23,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Check If The User Exist In Database
         $stmt = $con->prepare("SELECT 
-                                        Username, Password 
+                                        UserID, Username, Password 
                                     FROM 
                                         users 
                                     WHERE 
                                         Username = ? 
                                     AND 
                                         Password = ?");
-
+        // Execute Query
         $stmt->execute(array($user, $hashedPass));
 
+        // Fetch The Data
+        $get = $stmt->fetch();
+
+        // Fetch The Data
         $count = $stmt->rowCount();
 
         // If Count > 0 This Mean The Database Contain Record About This Username
         if ($count > 0) {
+
             $_SESSION['user'] = $user; // Register Session Name
+            
+            $_SESSION['uid'] = $get['UserID']; // Register User ID in Session
+
             header('Location: index.php'); // Redirect To Dashboard Page
             exit();
         }
@@ -44,33 +53,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $formErrors = array();
 
-        if (isset($_POST['username'])) {
-            $filteredUser = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+        $email = $_POST['email'];
+
+        if (isset($username)) {
+            $filteredUser = filter_var($username, FILTER_SANITIZE_STRING);
 
             if (strlen($filteredUser) < 4) {
                 $formErrors[] = 'Username Must Be Larger Than 4 Characters';
             }
         }
 
-        if (isset($_POST['password']) && isset($_POST['password2'])) {
+        if (isset($password) && isset($password2)) {
 
-            if (empty($_POST['password'])) {
+            if (empty($password)) {
                 $formErrors[] = 'Sorry Password Can\'t Be Empty';
             }
 
-            $pass1 = sha1($_POST['password']);
-            $pass2 = sha1($_POST['password2']);
-
-            if ($pass1 !== $pass2) {
+            if (sha1($password) !== sha1($password2)) {
                 $formErrors[] = 'Sorry Password Is Not Match';
             }
         }
 
-        if (isset($_POST['email'])) {
-            $filteredEmail = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        if (isset($email)) {
+            $filteredEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
 
             if (filter_var($filteredEmail, FILTER_VALIDATE_EMAIL) != true) {
                 $formErrors[] = 'This Email Is Not Valid';
+            }
+        }
+
+        // Check If There's No Error Proceed The User Add
+        if (empty($formErrors)) {
+
+            // Check If User Exist In Database
+            $check = checkItem("Username", "users", $username);
+
+            if ($check == 1) {
+
+                $formErrors[] = 'Sorry This User Is Exists';
+            } else {
+
+                // Insert User Info In Database
+                $stmt = $con->prepare("INSERT INTO 
+                                            users(Username, Password, Email, RegStatus, Date)
+                                        VALUES
+                                            (:zuser, :zpass, :zmail, 0, now())");
+                $stmt->execute(array(
+                    'zuser' => $username,
+                    'zpass' => sha1($password),
+                    'zmail' => $email
+                ));
+
+                // Echo Success Message
+                $successMsg = 'Congrats You Are Now Register User';
             }
         }
     }
@@ -112,12 +150,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
     <!-- End Signup Form -->
     <div class="the-errors text-center">
-
         <?php
         if (!empty($formErrors)) {
             foreach ($formErrors as $error) {
                 echo '<div class="msg error">' . $error . '</div>';
             }
+        }
+
+        if (isset($successMsg)) {
+            echo '<div class="msg success">' . $successMsg . '</div>';
         }
         ?>
     </div>

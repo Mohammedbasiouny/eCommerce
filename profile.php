@@ -31,27 +31,26 @@ if (isset($_SESSION['user'])) {
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-unlock-alt fa-fw"></i>
-                            <span>Login Name: </span><?php echo $info['Username'] ?>
+                            <span>Login Name</span> : <?php echo $info['Username'] ?>
                         </li>
                         <li>
                             <i class="fa fa-envelope fa-fw"></i>
-                            <span>Email: </span><?php echo $info['Email'] ?>
+                            <span>Email</span> : <?php echo $info['Email'] ?>
                         </li>
                         <li>
                             <i class="fa fa-user fa-fw"></i>
-                            <span>Full Name: </span><?php echo $info['FullName'] ?>
+                            <span>Full Name</span> : <?php echo $info['FullName'] ?>
                         </li>
                         <li>
                             <i class="fa fa-calendar fa-fw"></i>
-                            <span>Register Date: </span><?php echo $info['Date'] ?>
+                            <span>Register Date</span> : <?php echo $info['Date'] ?>
                         </li>
                         <li>
-                            <i class="fa fa-tags
-                        fa-fw"></i>
-                            <span>Fav Category: </span>
+                            <i class="fa fa-tags fa-fw"></i>
+                            <span>Fav Category</span> :
                         </li>
                     </ul>
-                    <a href="#" class="btn btn-default">Edit Information</a>
+                    <!-- <a href="#" class="btn btn-default">Edit Information</a> -->
                 </div>
             </div>
         </div>
@@ -63,8 +62,9 @@ if (isset($_SESSION['user'])) {
             <div class="panel panel-primary">
                 <div class="panel-heading">My Items</div>
                 <div class="panel-body">
-                    <div class="row">
-                        <?php
+                    <?php
+                    if (!empty(getItems('Member_ID', $info['UserID']))) {
+                        echo '<div class="row">';
                         foreach (getItems('Member_ID', $info['UserID']) as $item) {
                             echo '<div class="col-sm-6 col-md-3">';
                             echo '<div class="thumbnail item-box">';
@@ -77,8 +77,11 @@ if (isset($_SESSION['user'])) {
                             echo '</div>';
                             echo '</div>';
                         }
-                        ?>
-                    </div>
+                        echo '</div>';
+                    } else {
+                        echo 'There\'s No Ads To Show, Create <a href="newad.php">New Ad</a>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>

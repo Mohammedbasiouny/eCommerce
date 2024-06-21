@@ -21,12 +21,15 @@
             if (isset($_SESSION['user'])) {
                 echo 'Welcome ' . $sessionUser . ' ';
 
-                echo '<a href="profile.php"><span class="pull-right">My Profile</span></a>';
+                echo '<a href="profile.php">My Profile</a>';
 
-                echo '<a href="logout.php"><span class="pull-right">Logout</span></a>';
+                echo ' - <a href="newad.php">New Ad</a>';
+
+                echo ' - <a href="logout.php">Logout</a>';
 
                 if (checkUserStatus($sessionUser) == 1) {
-                    echo 'Your Membership Need Activation By Admin';
+
+                    // User is not activated
                 }
             } else {
                 echo 'Welcome Guest';
