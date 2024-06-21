@@ -54,7 +54,7 @@ if (isset($_SESSION['Username'])) {
                             <i class="fa fa-eye fa-fw"></i> View: [
                             <span class="active" data-view="full">Full</span> |
                             <span data-view="classic">Classic</span> ]
-                            
+
                         </div>
                     </div>
                     <div class="panel-body">

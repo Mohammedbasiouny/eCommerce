@@ -1,24 +1,20 @@
 <?php
 
-	function lang($phrase) {
+function lang($phrase)
+{
 
-		static $lang = array(
+	static $lang = array(
 
-			// Navbar Links
+		// Navbar Links
 
-			'HOME_ADMIN' 	=> 'Home',
-			'CATEGORIES' 	=> 'Categories',
-			'ITEMS' 		=> 'Items',
-			'MEMBERS' 		=> 'Members',
-			'STATISTICS' 	=> 'Statistics',
-			'LOGS' 			=> 'Logs',
-			'COMMENTS' 		=> 'Comments',
-			'' => '',
-			'' => '',
-			'' => '',
-			'' => ''
-		);
+		'HOME_ADMIN' 	=> 'Home',
+		'CATEGORIES' 	=> 'Categories',
+		'ITEMS' 		=> 'Items',
+		'MEMBERS' 		=> 'Members',
+		'STATISTICS' 	=> 'Statistics',
+		'LOGS' 			=> 'Logs',
+		'COMMENTS' 		=> 'Comments'
+	);
 
-		return $lang[$phrase];
-
-	}
+	return $lang[$phrase];
+}

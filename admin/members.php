@@ -6,7 +6,7 @@
 == You Can Add | Edit | Delete Members From Here
 ===================================================
 */
-
+ob_start();
 session_start();
 $pageTitle = 'Members';
 
@@ -425,3 +425,5 @@ if (isset($_SESSION['Username'])) {
 
     exit();
 }
+
+ob_end_flush();

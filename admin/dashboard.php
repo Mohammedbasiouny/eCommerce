@@ -1,7 +1,6 @@
 <?php
 
-ob_start("ob_gzhandler"); // Output Buffering Start
-
+ob_start();
 session_start();
 
 if (isset($_SESSION['Username'])) {

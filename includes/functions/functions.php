@@ -17,10 +17,10 @@ function getCat()
 ** Get Records Function v1.0
 ** Function To Get Items From Database
 */
-function getItems($Cat_ID){
+function getItems($where, $value) {
     global $con;
-    $getItems = $con->prepare("SELECT * FROM items WHERE Cat_ID = ? ORDER BY Item_ID DESC");
-    $getItems->execute(array($Cat_ID));
+    $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
+    $getItems->execute(array($value));
     $items = $getItems->fetchAll();
     return $items;
 }

@@ -1,4 +1,6 @@
 <?php
+
+ob_start();
 session_start();
 $noNavbar = '';
 $pageTitle = 'Login';
@@ -50,4 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<input class="btn btn-primary btn-block" type="submit" value="Login" />
 </form>
 
-<?php include $tpl . 'footer.php'; ?>
+<?php
+
+include $tpl . 'footer.php';
+ob_end_flush();
+
+?>

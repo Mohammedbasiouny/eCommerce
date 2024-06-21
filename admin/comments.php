@@ -7,6 +7,7 @@
 ===================================================
 */
 
+ob_start();
 session_start();
 $pageTitle = 'Comments';
 
@@ -223,6 +224,6 @@ if (isset($_SESSION['Username'])) {
 } else {
 
     header('Location: index.php');
-
     exit();
 }
+ob_end_flush();
