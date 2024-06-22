@@ -25,7 +25,9 @@ $stmt = $con->prepare("SELECT
                         ON 
                             users.UserID = items.Member_ID
                         WHERE 
-                            Item_ID = ?");
+                            Item_ID = ?
+                        AND
+                            Approve = 1");
 
 // Execute query
 $stmt->execute(array($itemid));
@@ -126,19 +128,19 @@ if ($count > 0) {
         <hr class="custom-hr">
         <?php
         $stmt = $con->prepare("SELECT 
-                                            comments.*, users.Username AS Member
-                                        FROM 
-                                            comments
-                                        INNER JOIN 
-                                            users 
-                                        ON 
-                                            users.UserID = comments.User_ID
-                                        where 
-                                            Item_ID = ? 
-                                        And 
-                                            Status = 1
-                                        ORDER BY 
-                                            C_ID DESC");
+                                    comments.*, users.Username AS Member
+                                FROM 
+                                    comments
+                                INNER JOIN 
+                                    users
+                                ON 
+                                    users.UserID = comments.User_ID
+                                WHERE 
+                                    Item_ID = ?
+                                AND 
+                                    Status = 1
+                                ORDER BY 
+                                    C_ID DESC");
 
         $stmt->execute(array($item['Item_ID']));
         $comments = $stmt->fetchAll();
@@ -157,8 +159,6 @@ if ($count > 0) {
                 </div>
             </div>
             <hr class="custom-hr">
-
-
         <?php
         }
         ?>
@@ -166,7 +166,10 @@ if ($count > 0) {
 <?php
 
 } else {
-    echo 'There\'s No Such ID';
+    echo '<div class="container">';
+    $theMsg = '<div class="alert alert-danger">There\'s No Such ID Or This Item Is Waiting Approval</div>';
+    redirectHome($theMsg);
+    echo '</div>';
 }
 
 include $tpl . 'footer.php';

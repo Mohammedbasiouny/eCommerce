@@ -164,6 +164,20 @@ h1 {
   color: #fff;
 }
 
+.item-box .approve-status {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: #b85a5a;
+  color: #fff;
+  padding: 3px 5px;
+}
+
+.item-box .caption p {
+  height: 44px;
+  max-height: 44px;
+}
+
 /* End Categories Page */
 
 /* Start Profile Page */
@@ -192,7 +206,7 @@ h1 {
 .thumbnail .date {
   text-align: right;
   font-size: 13px;
-  color: #AAA;
+  color: #aaa;
   font-weight: bold;
 }
 /* End Profile Page */

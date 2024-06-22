@@ -50,11 +50,10 @@ if (isset($_SESSION['user'])) {
                             <span>Fav Category</span> :
                         </li>
                     </ul>
-                    <!-- <a href="#" class="btn btn-default">Edit Information</a> -->
+                    <a href="#" class="btn btn-default">Edit Information</a>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div id="my-ads" class="my-ads block">
@@ -65,9 +64,14 @@ if (isset($_SESSION['user'])) {
                     <?php
                     if (!empty(getItems('Member_ID', $info['UserID']))) {
                         echo '<div class="row">';
-                        foreach (getItems('Member_ID', $info['UserID']) as $item) {
+                        foreach (getItems('Member_ID', $info['UserID'], 1) as $item) {
                             echo '<div class="col-sm-6 col-md-3">';
                             echo '<div class="thumbnail item-box">';
+                            if ($item['Approve'] == 0) {
+                                echo '<span class="approve-status">Waiting Approval</span>';
+                            } else {
+                                echo '<span class="approve-status">Approved</span>';
+                            }
                             echo '<span class="price-tag">$' . $item['Price'] . '</span>';
                             echo '<img class="img-responsive" src="img.png" alt="...">';
                             echo '<div class="caption">';
@@ -115,11 +119,6 @@ if (isset($_SESSION['user'])) {
             </div>
         </div>
     </div>
-
-
-
-
-
 <?php
 } else {
     header('Location: login.php');
