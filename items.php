@@ -81,33 +81,36 @@ if ($count > 0) {
                     <div class="add-comment">
                         <h3>Add Your Comment</h3>
                         <form action="<?php echo $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID'] ?>" method="post">
-                            <textarea name="comment"></textarea>
+                            <textarea class="form-control" name="comment" required></textarea>
                             <input class="btn btn-primary" type="submit" value="Add Comment">
                         </form>
                         <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                            // $comment = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
-                            // $userid = $_SESSION['uid'];
-                            // $itemid = $item['Item_ID'];
+                            $comment = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
+                            $userid = $_SESSION['uid'];
+                            $itemid = $item['Item_ID'];
 
-                            // if (! empty($comment)) {
+                            if (!empty($comment)) {
 
-                            //     $stmt = $con->prepare("INSERT INTO comments(Comment, Status, Comment_Date, Item_ID, User_ID) VALUES(:zcomment, 0, now(), :zitemid, :zuserid)");
+                                $stmt = $con->prepare("INSERT INTO 
+                                                        comments
+                                                            (Comment, Status, Comment_Date, Item_ID, User_ID) 
+                                                        VALUES
+                                                            (:zcomment, 0, now(), :zitemid, :zuserid)");
 
-                            //     $stmt->execute(array(
-                            //         'zcomment' => $comment,
-                            //         'zitemid' => $itemid,
-                            //         'zuserid' => $userid
-                            //     ));
+                                $stmt->execute(array(
+                                    'zcomment' => $comment,
+                                    'zitemid' => $itemid,
+                                    'zuserid' => $userid
+                                ));
 
-                            //     if ($stmt) {
-                            //         echo '<div class="alert alert-success">Comment Added</div>';
-                            //     }
-
-                            // } else {
-                            //     echo '<div class="alert alert-danger">You Must Add Comment</div>';
-                            // }
+                                if ($stmt) {
+                                    echo '<div class="alert alert-success">Comment Added</div>';
+                                }
+                            } else {
+                                echo '<div class="alert alert-danger">You Must Add Comment</div>';
+                            }
                         }
                         ?>
                     </div>
@@ -121,14 +124,44 @@ if ($count > 0) {
         ?>
 
         <hr class="custom-hr">
-        <div class="row">
-            <div class="col-md-3">
-                img
+        <?php
+        $stmt = $con->prepare("SELECT 
+                                            comments.*, users.Username AS Member
+                                        FROM 
+                                            comments
+                                        INNER JOIN 
+                                            users 
+                                        ON 
+                                            users.UserID = comments.User_ID
+                                        where 
+                                            Item_ID = ? 
+                                        And 
+                                            Status = 1
+                                        ORDER BY 
+                                            C_ID DESC");
+
+        $stmt->execute(array($item['Item_ID']));
+        $comments = $stmt->fetchAll();
+
+        foreach ($comments as $comment) {
+        ?>
+            <div class="comment-box">
+                <div class="row">
+                    <div class="col-sm-2 text-center">
+                        <img class="img-responsive img-thumbnail img-circle center-block" src="img.png" alt="...">
+                        <?php echo $comment['Member']; ?>
+                    </div>
+                    <div class="col-sm-10">
+                        <p class="lead"><?php echo $comment['Comment']; ?></p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-9">
-                comm
-            </div>
-        </div>
+            <hr class="custom-hr">
+
+
+        <?php
+        }
+        ?>
     </div>
 <?php
 
