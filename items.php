@@ -28,21 +28,14 @@ $stmt = $con->prepare("SELECT
                             Item_ID = ?
                         AND
                             Approve = 1");
-
-// Execute query
 $stmt->execute(array($itemid));
-
 $count = $stmt->rowCount();
 
 if ($count > 0) {
 
-    // Fetch the data
     $item = $stmt->fetch();
 ?>
-
-
     <h1 class="text-center"><?php echo $item['Name']; ?></h1>
-
     <div class="container">
         <div class="row">
             <div class="col-md-3">

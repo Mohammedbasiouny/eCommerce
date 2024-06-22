@@ -70,14 +70,14 @@ if (isset($_SESSION['user'])) {
                                 <div class="form-group form-group-lg">
                                     <label class="col-sm-2 control-label">Name</label>
                                     <div class="col-sm-10 col-md-10">
-                                        <input type="text" name="name" class="form-control live" required="required" placeholder="Name Of The Item" data-class=".live-title">
+                                        <input pattern=".{4,}" title="This Field Require At Least 4 Characters" type="text" name="name" class="form-control live" required="required" placeholder="Name Of The Item" data-class=".live-title">
                                     </div>
                                 </div>
                                 <!-- Start Description Field -->
                                 <div class="form-group form-group-lg">
                                     <label class="col-sm-2 control-label">Description</label>
                                     <div class="col-sm-10 col-md-10">
-                                        <input type="text" name="description" class="form-control live" required="required" placeholder="Description Of The Item" data-class=".live-desc">
+                                        <input pattern=".{10,}" title="This Field Require At Least 10 Characters" type="text" name="description" class="form-control live" required="required" placeholder="Description Of The Item" data-class=".live-desc">
                                     </div>
                                 </div>
                                 <!-- Start Price Field -->
@@ -91,15 +91,15 @@ if (isset($_SESSION['user'])) {
                                 <div class="form-group form-group-lg">
                                     <label class="col-sm-2 control-label">Country</label>
                                     <div class="col-sm-10 col-md-10">
-                                        <input type="text" name="country" class="form-control" required="required" placeholder="Country Of Made">
+                                        <input pattern=".{2,}" title="This Field Require At Least 2 Characters" type="text" name="country" class="form-control" required="required" placeholder="Country Of Made">
                                     </div>
                                 </div>
                                 <!-- Start Status Field -->
                                 <div class="form-group form-group-lg">
                                     <label class="col-sm-2 control-label">Status</label>
                                     <div class="col-sm-10 col-md-10">
-                                        <select name="status">
-                                            <option value="0">...</option>
+                                        <select name="status" required>
+                                            <option value="">...</option>
                                             <option value="1">New</option>
                                             <option value="2">Like New</option>
                                             <option value="3">Used</option>
@@ -110,12 +110,10 @@ if (isset($_SESSION['user'])) {
                                 <div class="form-group form-group-lg">
                                     <label class="col-sm-2 control-label">Category</label>
                                     <div class="col-sm-10 col-md-10">
-                                        <select name="category">
-                                            <option value="0">...</option>
+                                        <select name="category" required>
+                                            <option value="">...</option>
                                             <?php
-                                            $stmt2 = $con->prepare("SELECT * FROM categories");
-                                            $stmt2->execute();
-                                            $cats = $stmt2->fetchAll();
+                                            $cats = getAllFrom('*', 'categories', '', '', 'CatID');
                                             foreach ($cats as $cat) {
                                                 echo "<option value='" . $cat['CatID'] . "'>" . $cat['Name'] . "</option>";
                                             }

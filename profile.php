@@ -10,18 +10,14 @@ if (isset($_SESSION['user'])) {
     $getUser = $con->prepare("SELECT * FROM users WHERE Username = ?");
     $getUser->execute(array($sessionUser));
     $info = $getUser->fetch();
-
-    // $userid = $info['UserID'];
+    $userid = $info['UserID'];
     // $stmt = $con->prepare("SELECT * FROM items WHERE Member_ID = ?");
     // $stmt->execute(array($userid));
     // $items = $stmt->fetchAll();
     // $stmt2 = $con->prepare("SELECT * FROM comments WHERE User_ID = ?");
     // $stmt2->execute(array($userid));
     // $comments = $stmt2->fetchAll();
-
 ?>
-
-
     <h1 class="text-center">My Profile</h1>
     <div class="information block">
         <div class="container">
@@ -62,9 +58,12 @@ if (isset($_SESSION['user'])) {
                 <div class="panel-heading">My Items</div>
                 <div class="panel-body">
                     <?php
-                    if (!empty(getItems('Member_ID', $info['UserID']))) {
+
+                    $items = getAllFrom("*", "items", "WHERE Member_ID = $userid", "", "Item_ID", "DESC");
+
+                    if (!empty($items)) {
                         echo '<div class="row">';
-                        foreach (getItems('Member_ID', $info['UserID'], 1) as $item) {
+                        foreach ($items as $item) {
                             echo '<div class="col-sm-6 col-md-3">';
                             echo '<div class="thumbnail item-box">';
                             if ($item['Approve'] == 0) {
@@ -98,17 +97,10 @@ if (isset($_SESSION['user'])) {
                 <div class="panel-heading">Latest Comments</div>
                 <div class="panel-body">
                     <?php
-                    // Select All Users Except Admin
-                    $stmt = $con->prepare("SELECT Comment FROM comments WHERE User_ID = ?");
 
-                    // Execute The Statement
-                    $stmt->execute(array($info['UserID']));
-
-                    // Assign To Variable
-                    $comments = $stmt->fetchAll();
-
-                    if (!empty($comments)) {
-                        foreach ($comments as $comment) {
+                    $myComments = getAllFrom("*", "comments", "WHERE User_ID = $userid", "", "C_ID", "DESC");
+                    if (!empty($myComments)) {
+                        foreach ($myComments as $comment) {
                             echo '<p>' . $comment['Comment'] . '</p>';
                         }
                     } else {

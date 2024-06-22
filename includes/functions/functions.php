@@ -1,62 +1,30 @@
 <?php
 
 /*
-** Get Records Function v1.0
-** Function To Get Categories From Database
+** Get All Function v2.0
+** Function To Get All Records From Any Database Table
 */
-function getCat()
+function getAllFrom($field, $table, $where = NULL, $and = NULL, $orderfield = '', $ordering = "DESC")
 {
+
     global $con;
-    $getCat = $con->prepare("SELECT * FROM categories ORDER BY CatID ASC");
-    $getCat->execute();
-    $cats = $getCat->fetchAll();
-    return $cats;
+
+    $getAll = $con->prepare("SELECT $field FROM $table $where $and ORDER BY $orderfield $ordering");
+
+    $getAll->execute();
+
+    $all = $getAll->fetchAll();
+
+    return $all;
 }
 
 /*
-** Get AD Items Function v1.0
-** Function To Get AD Items From Database
+** Check Items Function v1.0
+** Function to Check Item In Database [ Function Accept Parameters ]
+** $select = The Item To Select [ Example: user, item, category ]
+** $from = The Table To Select From [ Example: users, items, categories ]
+** $value = The Value Of Select [ Example: Osama, Box, Electronics ]
 */
-function getItems($where, $value, $approve = NULL)
-{
-    global $con;
-
-    $sql = $approve == NULL ? 'AND Approve = 1' : '';
-
-    $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? $sql ORDER BY Item_ID DESC");
-    $getItems->execute(array($value));
-    $items = $getItems->fetchAll();
-    return $items;
-}
-
-/*
-** Check If User Is Not Activated
-** Function To Check The RegStatus Of The User
-*/
-function checkUserStatus($user)
-{
-    global $con;
-    $stmtx = $con->prepare("SELECT 
-                                Username, RegStatus 
-                            FROM 
-                                users 
-                            WHERE 
-                                Username = ? 
-                            AND 
-                                RegStatus = 0");
-    $stmtx->execute(array($user));
-    $status = $stmtx->rowCount();
-    return $status;
-}
-
-/*
-	** Check Items Function v1.0
-	** Function to Check Item In Database [ Function Accept Parameters ]
-	** $select = The Item To Select [ Example: user, item, category ]
-	** $from = The Table To Select From [ Example: users, items, categories ]
-	** $value = The Value Of Select [ Example: Osama, Box, Electronics ]
-	*/
-
 function checkItem($select, $from, $value)
 {
 

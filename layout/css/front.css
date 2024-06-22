@@ -94,6 +94,11 @@ h1 {
   background-color: #fff;
 }
 
+.upper-bar .my-img {
+  width: 32px;
+  height: 32px;
+}
+
 /* End Header */
 
 /* Start Login Page */
@@ -208,6 +213,10 @@ h1 {
   font-size: 13px;
   color: #aaa;
   font-weight: bold;
+}
+
+.information .btn {
+  margin-top: 10px;
 }
 /* End Profile Page */
 
