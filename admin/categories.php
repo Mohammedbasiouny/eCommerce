@@ -29,7 +29,7 @@ if (isset($_SESSION['Username'])) {
             $sort = $_GET['sort'];
         }
 
-        $stmt2 = $con->prepare("SELECT * FROM categories ORDER BY Ordering $sort");
+        $stmt2 = $con->prepare("SELECT * FROM categories WHERE Parent = 0 ORDER BY Ordering $sort");
 
         $stmt2->execute();
 
@@ -37,7 +37,7 @@ if (isset($_SESSION['Username'])) {
 
         if (!empty($cats)) {
 
-?>
+            ?>
             <h1 class="text-center">Manage Categories</h1>
             <div class="container categories">
                 <div class="panel panel-default">
@@ -46,11 +46,11 @@ if (isset($_SESSION['Username'])) {
                         <div class="option pull-right">
                             <i class="fa fa-sort fa-fw"></i> Ordering: [
                             <a class="<?php if ($sort == 'ASC') {
-                                            echo 'active';
-                                        } ?>" href="?sort=ASC">Asc</a> |
+                                echo 'active';
+                            } ?>" href="?sort=ASC">Asc</a> |
                             <a class="<?php if ($sort == 'DESC') {
-                                            echo 'active';
-                                        } ?>" href="?sort=DESC">Desc</a> ]
+                                echo 'active';
+                            } ?>" href="?sort=DESC">Desc</a> ]
                             <i class="fa fa-eye fa-fw"></i> View: [
                             <span class="active" data-view="full">Full</span> |
                             <span data-view="classic">Classic</span> ]
@@ -83,6 +83,19 @@ if (isset($_SESSION['Username'])) {
                                 echo '<span class="cat-span advertises"><i class="fa fa-close"></i> Ads Disable</span>';
                             }
                             echo '</div>';
+                            // Get Child Categories
+                            $childCats = getAllFrom("*", "categories", "WHERE Parent = {$cat['CatID']}", "", "CatID", "ASC");
+                            if (!empty($childCats)) {
+                                echo '<h4 class="child-head">Child Categories</h4>';
+                                echo '<ul class="list-unstyled child-cats">';
+                                foreach ($childCats as $childCat) {
+                                    echo '<li class="child-link">
+                                            <a href="categories.php?do=Edit&catid=' . $childCat['CatID'] . '">' . $childCat['Name'] . '</a>
+                                            <a href="categories.php?do=Delete&catid=' . $childCat['CatID'] . '" class="confirm show-delete">Delete</a>
+                                        </li>';
+                                }
+                                echo '</ul>';
+                            }
                             echo "</div>";
                             echo "<hr>";
                         }
@@ -92,7 +105,7 @@ if (isset($_SESSION['Username'])) {
                 <a class="btn btn-primary add-category" href="categories.php?do=Add"><i class="fa fa-plus"></i> New Category</a>
             </div>
 
-        <?php
+            <?php
 
         } else {
 
@@ -111,7 +124,8 @@ if (isset($_SESSION['Username'])) {
                 <div class="form-group form-group-lg">
                     <label class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" required="required" placeholder="Name Of The Category" autocomplete="off">
+                        <input type="text" name="name" class="form-control" required="required"
+                            placeholder="Name Of The Category" autocomplete="off">
                     </div>
                 </div>
                 <!-- Start Description Field -->
@@ -126,6 +140,21 @@ if (isset($_SESSION['Username'])) {
                     <label class="col-sm-2 control-label">Ordering</label>
                     <div class="col-sm-8">
                         <input type="text" name="ordering" class="form-control" placeholder="Number To Arrange The Categories">
+                    </div>
+                </div>
+                <!-- Start Category Type Field -->
+                <div class="form-group form-group-lg">
+                    <label class="col-sm-2 control-label">Category Type</label>
+                    <div class="col-sm-8">
+                        <select name="parent">
+                            <option value="0">None</option>
+                            <?php
+                            $allCats = getAllFrom("*", "categories", "WHERE Parent = 0", "", "CatID", "ASC");
+                            foreach ($allCats as $cat) {
+                                echo "<option value='" . $cat['CatID'] . "'>" . $cat['Name'] . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <!-- Start Visibility Field -->
@@ -189,6 +218,7 @@ if (isset($_SESSION['Username'])) {
             // Get Variables From The Form
             $name = $_POST['name'];
             $desc = $_POST['description'];
+            $parent = $_POST['parent'];
             $order = $_POST['ordering'];
             $visible = $_POST['visibility'];
             $comment = $_POST['commenting'];
@@ -205,13 +235,14 @@ if (isset($_SESSION['Username'])) {
 
                 // Insert User Info In Database
                 $stmt = $con->prepare("INSERT INTO 
-                                            categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_Ads)
+                                            categories(Name, Description, Parent, Ordering, Visibility, Allow_Comment, Allow_Ads)
                                         VALUES
-                                            (:zname, :zdesc, :zorder, :zvisible, :zcomment, :zads)");
+                                            (:zname, :zdesc, :zparent, :zorder, :zvisible, :zcomment, :zads)");
                 $stmt->execute(
                     array(
                         'zname' => $name,
                         'zdesc' => $desc,
+                        'zparent' => $parent,
                         'zorder' => $order,
                         'zvisible' => $visible,
                         'zcomment' => $comment,
@@ -257,21 +288,43 @@ if (isset($_SESSION['Username'])) {
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" required="required" placeholder="Name Of The Category" value="<?php echo $cat['Name'] ?>">
+                            <input type="text" name="name" class="form-control" required="required"
+                                placeholder="Name Of The Category" value="<?php echo $cat['Name'] ?>">
                         </div>
                     </div>
                     <!-- Start Description Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" placeholder="Describe The Category" value="<?php echo $cat['Description'] ?>">
+                            <input type="text" name="description" class="form-control" placeholder="Describe The Category"
+                                value="<?php echo $cat['Description'] ?>">
                         </div>
                     </div>
                     <!-- Start Ordering Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Ordering</label>
                         <div class="col-sm-8">
-                            <input type="text" name="ordering" class="form-control" placeholder="Number To Arrange The Categories" value="<?php echo $cat['Ordering'] ?>">
+                            <input type="text" name="ordering" class="form-control" placeholder="Number To Arrange The Categories"
+                                value="<?php echo $cat['Ordering'] ?>">
+                        </div>
+                    </div>
+                    <!-- Start Category Type Field -->
+                    <div class="form-group form-group-lg">
+                        <label class="col-sm-2 control-label">Category Type</label>
+                        <div class="col-sm-8">
+                            <select name="parent">
+                                <option value="0">None</option>
+                                <?php
+                                $allCats = getAllFrom("*", "categories", "WHERE Parent = 0", "", "CatID", "ASC");
+                                foreach ($allCats as $category) {
+                                    echo "<option value='" . $category['CatID'] . "'";
+                                    if ($cat['Parent'] == $category['CatID']) {
+                                        echo ' selected';
+                                    }
+                                    echo ">" . $category['Name'] . "</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <!-- Start Visibility Field -->
@@ -280,14 +333,14 @@ if (isset($_SESSION['Username'])) {
                         <div class="col-sm-10 col-md-6">
                             <div>
                                 <input id="vis-yes" type="radio" name="visibility" value="0" <?php if ($cat['Visibility'] == 0) {
-                                                                                                    echo 'checked';
-                                                                                                } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="vis-yes">Yes</label>
                             </div>
                             <div>
                                 <input id="vis-no" type="radio" name="visibility" value="1" <?php if ($cat['Visibility'] == 1) {
-                                                                                                echo 'checked';
-                                                                                            } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="vis-no">No</label>
                             </div>
                         </div>
@@ -298,14 +351,14 @@ if (isset($_SESSION['Username'])) {
                         <div class="col-sm-10 col-md-6">
                             <div>
                                 <input id="com-yes" type="radio" name="commenting" value="0" <?php if ($cat['Allow_Comment'] == 0) {
-                                                                                                    echo 'checked';
-                                                                                                } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="com-yes">Yes</label>
                             </div>
                             <div>
                                 <input id="com-no" type="radio" name="commenting" value="1" <?php if ($cat['Allow_Comment'] == 1) {
-                                                                                                echo 'checked';
-                                                                                            } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="com-no">No</label>
                             </div>
                         </div>
@@ -316,14 +369,14 @@ if (isset($_SESSION['Username'])) {
                         <div class="col-sm-10 col-md-6">
                             <div>
                                 <input id="ads-yes" type="radio" name="ads" value="0" <?php if ($cat['Allow_Ads'] == 0) {
-                                                                                            echo 'checked';
-                                                                                        } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="ads-yes">Yes</label>
                             </div>
                             <div>
                                 <input id="ads-no" type="radio" name="ads" value="1" <?php if ($cat['Allow_Ads'] == 1) {
-                                                                                            echo 'checked';
-                                                                                        } ?>>
+                                    echo 'checked';
+                                } ?>>
                                 <label for="ads-no">No</label>
                             </div>
                         </div>
@@ -337,7 +390,7 @@ if (isset($_SESSION['Username'])) {
                 </form>
             </div>
 
-<?php
+            <?php
             // If There's No Such ID Show Error Message
         } else {
 
@@ -357,6 +410,7 @@ if (isset($_SESSION['Username'])) {
             $id = $_POST['catid'];
             $name = $_POST['name'];
             $desc = $_POST['description'];
+            $parent = $_POST['parent'];
             $order = $_POST['ordering'];
             $visible = $_POST['visibility'];
             $comment = $_POST['commenting'];
@@ -367,14 +421,15 @@ if (isset($_SESSION['Username'])) {
 											categories 
 										SET 
 											Name = ?, 
-											Description = ?, 
+											Description = ?,
+                                            Parent = ?,         
 											Ordering = ?, 
 											Visibility = ?,
 											Allow_Comment = ?,
 											Allow_Ads = ? 
 										WHERE 
 											CatID = ?");
-            $stmt->execute(array($name, $desc, $order, $visible, $comment, $ads, $id));
+            $stmt->execute(array($name, $desc, $parent, $order, $visible, $comment, $ads, $id));
 
             // Echo Success Message
             $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';

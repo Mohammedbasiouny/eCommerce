@@ -60,7 +60,7 @@
                 <ul class="nav navbar-nav">
                     <?php
 
-                    $cats = getAllFrom("*", "categories", "", "", "CatID", "ASC");
+                    $cats = getAllFrom('*', 'categories', 'WHERE Parent = 0', '', 'CatID', 'ASC');
 
                     foreach ($cats as $cat) {
                         echo '<li>
