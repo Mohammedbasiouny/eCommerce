@@ -16,6 +16,7 @@ if (isset($_SESSION['user'])) {
         $country = filter_var($_POST['country'], FILTER_SANITIZE_STRING);
         $status = filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
         $category = filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
+        $tags = filter_var($_POST['tags'], FILTER_SANITIZE_STRING);
 
         if (strlen($name) < 4) {
             $formErrors[] = 'Item Title Must Be At Least 4 Characters';
@@ -39,8 +40,8 @@ if (isset($_SESSION['user'])) {
         if (empty($formErrors)) {
             // Insert Userinfo In Database
             $stmt = $con->prepare("INSERT INTO 
-                                    items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID) 
-                                    VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember)");
+                                    items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, Tags) 
+                                    VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :ztags)");
             $stmt->execute(array(
                 'zname' => $name,
                 'zdesc' => $desc,
@@ -48,7 +49,8 @@ if (isset($_SESSION['user'])) {
                 'zcountry' => $country,
                 'zstatus' => $status,
                 'zcat' => $category,
-                'zmember' => $_SESSION['uid']
+                'zmember' => $_SESSION['uid'],
+                'ztags' => $tags
             ));
             // Echo Success Message
             if ($stmt) {
@@ -119,6 +121,13 @@ if (isset($_SESSION['user'])) {
                                             }
                                             ?>
                                         </select>
+                                    </div>
+                                </div>
+                                <!-- Start Tags Field -->
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-2 control-label">Tags</label>
+                                    <div class="col-sm-10 col-md-10">
+                                        <input type="text" name="tags" class="form-control" placeholder="Separate Tags With Comma (,)">
                                     </div>
                                 </div>
                                 <!-- Start Submit Field -->
