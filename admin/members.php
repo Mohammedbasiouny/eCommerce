@@ -40,9 +40,10 @@ if (isset($_SESSION['Username'])) {
             <h1 class="text-center">Manage Members</h1>
             <div class="container">
                 <div class="table-responsive">
-                    <table class="main-table text-center table table-bordered">
+                    <table class="main-table manage-members text-center table table-bordered">
                         <tr>
                             <td>#ID</td>
+                            <td>Avatar</td>
                             <td>Username</td>
                             <td>Email</td>
                             <td>Full Name</td>
@@ -53,6 +54,13 @@ if (isset($_SESSION['Username'])) {
                         foreach ($rows as $row) {
                             echo "<tr>";
                             echo "<td>" . $row['UserID'] . "</td>";
+                            echo "<td>";
+                            if (empty($row['Avatar'])) {
+                                echo "<img src='uploads/avatars/default.png' alt=''>";
+                            } else {
+                                echo "<img src='uploads/avatars/" . $row['Avatar'] . "' alt=''>";
+                            }
+                            echo "</td>";
                             echo "<td>" . $row['Username'] . "</td>";
                             echo "<td>" . $row['Email'] . "</td>";
                             echo "<td>" . $row['FullName'] . "</td>";
@@ -83,7 +91,7 @@ if (isset($_SESSION['Username'])) {
         ?>
         <h1 class="text-center">Add New Member</h1>
         <div class="container">
-            <form class="form-horizontal" action="?do=Insert" method="POST">
+            <form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
                 <!-- Start Username Field -->
                 <div class="form-group form-group-lg">
                     <label class="col-sm-2 control-label">Username</label>
@@ -113,6 +121,13 @@ if (isset($_SESSION['Username'])) {
                         <input type="text" name="full" class="form-control" required="required" placeholder="Full Name Appear In Your Profile Page">
                     </div>
                 </div>
+                <!-- Start Avatar Field -->
+                <div class="form-group form-group-lg">
+                    <label class="col-sm-2 control-label">User Avatar</label>
+                    <div class="col-sm-8">
+                        <input type="file" name="avatar" class="form-control" required="required">
+                    </div>
+                </div>
                 <!-- Start Submit Field -->
                 <div class="form-group" form-group-lg>
                     <div class="col-sm-offset-2 col-sm-10">
@@ -128,6 +143,19 @@ if (isset($_SESSION['Username'])) {
 
             echo "<h1 class='text-center'>Insert New Member</h1>";
             echo "<div class='container'>";
+
+            // Upload Variables
+            $avatarName = $_FILES['avatar']['name'];
+            $avatarSize = $_FILES['avatar']['size'];
+            $avatarTmp = $_FILES['avatar']['tmp_name'];
+            $avatarType = $_FILES['avatar']['type'];
+
+            // List Of Allowed File Typed To Upload
+            $avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
+
+            // Get Avatar Extension
+            $avatarArray = explode(".", $avatarName);
+            $avatarExtension = strtolower(end($avatarArray));
 
             // Get Variables From The Form
             $user   = $_POST['username'];
@@ -164,8 +192,24 @@ if (isset($_SESSION['Username'])) {
                 $formErrors[] = 'Full Name Can\'t Be <strong>Empty</strong>';
             }
 
+            if (empty($avatarName)) {
+                $formErrors[] = 'Avatar Is <strong>Required</strong>';
+            }
+
+            if ($avatarSize > 4194304) {
+                $formErrors[] = 'Avatar Can\'t Be Larger Than <strong>4MB</strong>';
+            }
+
+            if (!empty($avatarName) && !in_array($avatarExtension, $avatarAllowedExtension)) {
+                $formErrors[] = 'This Extension Is Not <strong>Allowed</strong>';
+            }
+
+
             // Check If There's No Error Proceed The Update Operation
             if (empty($formErrors)) {
+
+                $avatar = rand(0, 1000000000) . '_' . $avatarName;
+                move_uploaded_file($avatarTmp, "uploads\avatars\\" . $avatar);
 
                 // Check If User Exist In Database
                 $check = checkItem("Username", "users", $user);
@@ -178,14 +222,15 @@ if (isset($_SESSION['Username'])) {
 
                     // Insert User Info In Database
                     $stmt = $con->prepare("INSERT INTO 
-                                                users(Username, Password, Email, FullName, RegStatus, Date)
+                                                users(Username, Password, Email, FullName, RegStatus, Date, Avatar)
                                             VALUES
-                                                (:zuser, :zpass, :zmail, :zname, 1, now())");
+                                                (:zuser, :zpass, :zmail, :zname, 1, now(), :zavatar)");
                     $stmt->execute(array(
                         'zuser' => $user,
                         'zpass' => $hashedPass,
                         'zmail' => $email,
-                        'zname' => $name
+                        'zname' => $name,
+                        'zavatar' => $avatar
                     ));
 
                     // Echo Success Message
