@@ -239,6 +239,18 @@ h1 {
   /* margin-right: 10px; */
 }
 
+.avatar-preview {
+  width: 100px; /* Adjust based on your preference */
+  height: 100px; /* Adjust based on your preference */
+  border-radius: 50%; /* Circular avatar */
+  margin-top: 10px; /* Space below the avatar */
+  object-fit: cover; /* Ensures the image covers the area, useful for non-square images */
+  border: 2px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+
 .main-table {
   -webkit-box-shadow: 0 3px 10px #ccc;
   -moz-box-shadow: 0 3px 10px #ccc;

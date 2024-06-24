@@ -158,10 +158,10 @@ if (isset($_SESSION['Username'])) {
             $avatarExtension = strtolower(end($avatarArray));
 
             // Get Variables From The Form
-            $user   = $_POST['username'];
-            $pass   = $_POST['password'];
-            $email  = $_POST['email'];
-            $name   = $_POST['full'];
+            $user = $_POST['username'];
+            $pass = $_POST['password'];
+            $email = $_POST['email'];
+            $name = $_POST['full'];
 
             $hashedPass = sha1($_POST['password']);
 
@@ -225,13 +225,15 @@ if (isset($_SESSION['Username'])) {
                                                 users(Username, Password, Email, FullName, RegStatus, Date, Avatar)
                                             VALUES
                                                 (:zuser, :zpass, :zmail, :zname, 1, now(), :zavatar)");
-                    $stmt->execute(array(
-                        'zuser' => $user,
-                        'zpass' => $hashedPass,
-                        'zmail' => $email,
-                        'zname' => $name,
-                        'zavatar' => $avatar
-                    ));
+                    $stmt->execute(
+                        array(
+                            'zuser' => $user,
+                            'zpass' => $hashedPass,
+                            'zmail' => $email,
+                            'zname' => $name,
+                            'zavatar' => $avatar
+                        )
+                    );
 
                     // Echo Success Message
                     $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
@@ -272,7 +274,7 @@ if (isset($_SESSION['Username'])) {
         if ($count > 0) { ?>
             <h1 class="text-center">Edit Member</h1>
             <div class="container">
-                <form class="form-horizontal" action="?do=Update" method="POST">
+                <form class="form-horizontal" action="?do=Update" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="userid" value="<?php echo $userid ?>">
                     <!-- Start Username Field -->
                     <div class="form-group form-group-lg">
@@ -303,6 +305,32 @@ if (isset($_SESSION['Username'])) {
                             <input type="text" name="full" class="form-control" value="<?php echo $row['FullName'] ?>" required="required">
                         </div>
                     </div>
+                    <!-- Start Avatar Field -->
+                    <div class="form-group form-group-lg">
+                        <label for="avatar" class="col-sm-2 control-label">Choose avatar</label>
+                        <div class="col-sm-8">
+                            <?php if (!empty($row['Avatar'])) : ?>
+                                <!-- Show current avatar -->
+                                <div class="custom-file mb-2">
+                                    <input type="file" name="avatar" class="custom-file-input form-control" id="avatar">
+                                </div>
+                                <img src="uploads/avatars/<?php echo $row['Avatar']; ?>" alt="Avatar" class="avatar-preview img-thumbnail mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remove_avatar" id="remove_avatar">
+                                    <label class="form-check-label" for="remove_avatar">
+                                        Remove current avatar
+                                    </label>
+                                </div>
+                            <?php else : ?>
+                                <!-- Show default avatar upload -->
+                                <div class="custom-file mb-2">
+                                    <input type="file" name="avatar" class="custom-file-input form-control" id="avatar" required="required">
+                                </div>
+                                <img src="uploads/avatars/default.png" alt="Default Avatar" class="avatar-preview img-thumbnail">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
                     <!-- Start Submit Field -->
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
@@ -328,10 +356,12 @@ if (isset($_SESSION['Username'])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Get Variables From The Form
-            $id     = $_POST['userid'];
-            $user   = $_POST['username'];
-            $email  = $_POST['email'];
-            $name   = $_POST['full'];
+            $id = $_POST['userid'];
+            $user = $_POST['username'];
+            $email = $_POST['email'];
+            $name = $_POST['full'];
+            $avatar = $_FILES['avatar']; // File input for avatar
+            $removeAvatar = isset($_POST['remove_avatar']); // Checkbox to remove current avatar
 
             // Password Trick
             $pass = empty($_POST['newpassword']) ? $_POST['oldpassword'] : sha1($_POST['newpassword']);
@@ -374,9 +404,50 @@ if (isset($_SESSION['Username'])) {
                     redirectHome($theMsg, 'back');
                 } else {
 
+                    // Fetch current avatar name from database
+                    $stmtAvatar = $con->prepare("SELECT Avatar FROM users WHERE UserID = ?");
+                    $stmtAvatar->execute(array($id));
+                    $row = $stmtAvatar->fetch();
+
+                    $currentAvatar = $row['Avatar'];
+
+                    // Determine the avatar update action
+                    if ($removeAvatar) {
+                        // User wants to remove current avatar
+                        // Remove avatar file from server
+                        if (!empty($currentAvatar) && $currentAvatar != 'default.png') {
+                            $avatarPath = 'uploads/avatars/' . $currentAvatar;
+                            if (file_exists($avatarPath)) {
+                                unlink($avatarPath); // Delete the file from the server
+                            }
+                        }
+
+                        $avatarName = ''; // Set avatar name to empty
+                    } else {
+                        // User uploads a new avatar
+                        if (!empty($avatar['name'])) {
+                            // Delete old avatar if it exists
+                            if (!empty($currentAvatar) && $currentAvatar != 'default.png') {
+                                $avatarPath = 'uploads/avatars/' . $currentAvatar;
+                                if (file_exists($avatarPath)) {
+                                    unlink($avatarPath); // Delete the file from the server
+                                }
+                            }
+
+                            // Upload new avatar
+                            $avatarName = uniqid('avatar_') . '_' . $avatar['name'];
+                            $avatarTmp = $avatar['tmp_name'];
+                            $avatarPath = 'uploads/avatars/' . $avatarName;
+                            move_uploaded_file($avatarTmp, $avatarPath);
+                        } else {
+                            // No new avatar uploaded, keep current avatar
+                            $avatarName = $currentAvatar;
+                        }
+                    }
+
                     // Update The Database With This Info
-                    $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ? WHERE UserID = ?");
-                    $stmt->execute(array($user, $email, $name, $pass, $id));
+                    $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ?, Avatar = ? WHERE UserID = ?");
+                    $stmt->execute(array($user, $email, $name, $pass, $avatarName, $id));
 
                     // Echo Success Message
                     $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
@@ -410,6 +481,20 @@ if (isset($_SESSION['Username'])) {
 
         // If There's Such ID Show The Form
         if ($check > 0) {
+
+            // Fetch current avatar name from database
+            $stmtAvatar = $con->prepare("SELECT Avatar FROM users WHERE UserID = ?");
+            $stmtAvatar->execute(array($userid));
+            $row = $stmtAvatar->fetch();
+            $currentAvatar = $row['Avatar'];
+
+            // Delete avatar file from server if it exists and is not the default avatar
+            if (!empty($currentAvatar) && $currentAvatar != 'default.png') {
+                $avatarPath = 'uploads/avatars/' . $currentAvatar;
+                if (file_exists($avatarPath)) {
+                    unlink($avatarPath); // Delete the file from server
+                }
+            }
 
             // Delete The Database With This Info
             $stmt = $con->prepare("DELETE FROM users WHERE UserID = :zuser");
